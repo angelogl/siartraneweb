@@ -1,6 +1,6 @@
 from django import forms
 
-from principal.models import Socios, Marcas
+from principal.models import Socios, Marcas, Baterias, Cauchos
 
 # Socios
 class PrincipalSocios():
@@ -77,3 +77,62 @@ class MarcaEdit(forms.ModelForm):
         self.fields['marca'].widget.attrs['style'] = 'width:370px;'
         self.fields['modelo'].widget.attrs['style'] = 'width:370px;'		
 
+# Baterías
+class PrincipalBaterias():
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Baterias
+        fields = ['descripcion']
+
+class BateriaCreate(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Baterias
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(BateriaCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'
+
+class BateriaEdit(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Baterias
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(BateriaEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'
+
+# Cauchos
+class PrincipalCauchos():
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Cauchos
+        fields = ['descripcion']
+
+class CauchoCreate(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Cauchos
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(CauchoCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'
+
+class CauchoEdit(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Cauchos
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(CauchoEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'

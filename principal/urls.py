@@ -18,6 +18,20 @@ urlpatterns = [
     url(r'^marcas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_marca.as_view()), name='marca_delete'),
     url(r'^reporte_marcas_pdf/$',login_required(views.ReporteMarcasPDF.as_view()), name="reporte_marcas_pdf"),    
 
+    #Bateria
+    url(r'^baterias/$',login_required(views.principal_baterias.as_view()), name='principal_baterias'),
+    url(r'^baterias/agregar/$',login_required(views.principal_agregar_bateria.as_view()), name='bateria_create'),    
+    url(r'^baterias/editar/(?P<pk>\d+)$',login_required(views.principal_editar_bateria.as_view()), name='bateria_edit'),
+    url(r'^baterias/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_bateria.as_view()), name='bateria_delete'),
+    url(r'^reporte_baterias_pdf/$',login_required(views.ReporteBateriasPDF.as_view()), name="reporte_baterias_pdf"),    
+
+    #Caucho
+    url(r'^cauchos/$',login_required(views.principal_cauchos.as_view()), name='principal_cauchos'),
+    url(r'^cauchos/agregar/$',login_required(views.principal_agregar_caucho.as_view()), name='caucho_create'),    
+    url(r'^cauchos/editar/(?P<pk>\d+)$',login_required(views.principal_editar_caucho.as_view()), name='caucho_edit'),
+    url(r'^cauchos/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_caucho.as_view()), name='caucho_delete'),
+    url(r'^reporte_cauchos_pdf/$',login_required(views.ReporteCauchosPDF.as_view()), name="reporte_cauchos_pdf"), 
+   
     # Socio 
     url(r'^socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
     url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    

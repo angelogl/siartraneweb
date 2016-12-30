@@ -28,5 +28,18 @@ class Marcas(models.Model):
     def __str__(self):
         return u'%s-%s' % (self.marca,self.modelo)
 
-    #def get_absolute_url(self):
-    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
+class Baterias(models.Model):
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "Bateriass"
+
+    def __str__(self):
+        return u'%s' % (self.descripcion)
+
+class Cauchos(models.Model):
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "Cauchoss"
+
+    def __str__(self):
+        return u'%s' % (self.descripcion)

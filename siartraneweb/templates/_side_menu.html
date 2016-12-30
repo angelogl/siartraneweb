@@ -53,12 +53,14 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="http://www.jquery2dotnet.com">Baterías</a>
+                                        {% url "principal_baterias" as principal_baterias_url %}
+                                        <span class="glyphicon glyphicon-credit-card text-primary"></span><a href="{{ principal_baterias_url }}">Baterías</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="http://www.jquery2dotnet.com">Cauchos</a>
+                                        {% url "principal_cauchos" as principal_cauchos_url %}
+                                        <span class="glyphicon glyphicon-record text-primary"></span><a href="{{ principal_cauchos_url }}">Cauchos</a>
                                     </td>
                                 </tr>
                                 <tr>
