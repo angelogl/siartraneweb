@@ -5,3 +5,6 @@ pinax-eventlog==1.1.2
 Django==1.9.8
 pinax-theme-bootstrap==7.10.1
 
+django-modalview==0.1.5
+reportlab==3.3.0
+
