@@ -1,0 +1,80 @@
+{% extends "site_base.html" %}
+{% load staticfiles i18n %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
+    <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" /> 
+    <script src='/site_media/static/js/site-5e73bbeeb0.js'></script>   
+{% endblock %}
+
+{% block body_base %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            {% include "_side_menu.html" %}
+        </div>
+        <div class="col-sm-9 col-md-9">
+          {% include "_socio_menu.html" %}
+           <table class="table table-hover" id="table_socios">
+                 <thead>
+                    <tr>
+                       <th>{% trans 'Cédula' %}</th>
+                       <th>{% trans 'Apellidos' %}</th>
+                       <th>{% trans 'Nombres' %}</th>                       
+                      <th colspan="2" align="center">{% trans 'Acciones' %}</th
+                    </tr>
+                 </thead>
+                 <tbody>
+                    {% for socios in view.socios %}
+                         <tr>
+                           <td>{{ socios.cedula }}</td>
+                           <td>{{ socios.apellidos|default:'' }}</td>
+                           <td>{{ socios.nombres|default:'' }}</td>
+                           <td><a id="update_socio{{ socios.id }}" href="{% url 'socio_edit' socios.id %}" class="btn btn-primary btn-ms">Editar</a></td>
+                           <td><a id="delete_socio{{ socios.id }}" href="{% url 'socio_delete' socios.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
+                         </tr>
+                         <script type="text/javascript">
+                            $(function(){
+                                $('#update_socio{{ socios.id }}').DjangoModalRunner({
+                                   on_hide_modal_after_submit: function(){
+                                     location.reload();
+                                   },
+                               });
+                            });
+                            $(function(){
+                                $('#delete_socio{{ socios.id }}').DjangoModalRunner({
+                                   on_hide_modal_after_submit: function(){
+                                     location.reload();
+                                   },
+                               });
+                            });
+                         </script>                                                      
+                    {% endfor %}
+                 </tbody>
+              </table>
+              <hr>
+         <div class="row">
+            <div class="col-lg-12">
+                 <a id="create_socio" href="{% url 'socio_create' %}" class="btn btn-success">Agregar Socio</a>         
+            </div>
+         </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+  <script type="text/javascript" src="{% static 'django_modalview/js/django_modal_view.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_modalview/js/jquery.form.js' %}"></script>    
+
+  <script type="text/javascript">
+     $(function(){
+       $('#create_socio').DjangoModalRunner({
+          on_hide_modal_after_submit: function(){
+            location.reload();
+          },
+       });
+     });
+  </script>
+{% endblock %}

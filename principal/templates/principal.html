@@ -1,0 +1,28 @@
+{% extends "site_base.html" %}
+
+{% load staticfiles i18n %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
+    <script src='/site_media/static/js/site-5e73bbeeb0.js'></script
+{% endblock %}
+
+{% block body_base %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            {% include "_side_menu.html" %}
+        </div>
+        <div class="col-sm-9 col-md-9">
+            <div class="well">
+                <h1>
+                    Accordion Menu... With Icon</h1>
+                Admin Dashboard Accordion Menu
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
