@@ -127,7 +127,7 @@ class ReportePersonasPDF(View):
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 16)
         #Dibujamos una cadena en la ubicación X,Y especificada
-        pdf.drawString(230, 790, u"PYTHON PIURA")
+        pdf.drawString(230, 790, u"PYTHON PIURA.")
         pdf.setFont("Helvetica", 14)
         pdf.drawString(200, 770, u"REPORTE DE PERSONAS")
 
