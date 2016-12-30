@@ -13,8 +13,9 @@ from principal.forms import SocioEdit, SocioCreate
 from principal.forms import MarcaEdit, MarcaCreate
 from principal.forms import BateriaEdit, BateriaCreate
 from principal.forms import CauchoEdit, CauchoCreate
+from principal.forms import RinEdit, RinCreate
 
-from principal.models import Socios,Marcas,Baterias,Cauchos
+from principal.models import Socios,Marcas,Baterias,Cauchos,Rines
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -209,6 +210,55 @@ class principal_eliminar_caucho(ModalDeleteView):
    def delete(self, request, *args, **kwargs):
      self.response = ModalResponse("Imformación eliminada", "success")
      super(principal_eliminar_caucho, self).delete(request, *args, **kwargs)
+
+# Rines
+class principal_rines(TemplateView):
+    template_name = "principal_rines.html"
+    title = "My beautiful list of books"
+
+    def rines(self):
+        return Rines.objects.all()
+
+class principal_agregar_rin(ModalCreateView):
+
+   def __init__(self, *args, **kwargs):
+     super(principal_agregar_rin, self).__init__(*args, **kwargs)
+     self.title = "Agregue los datos"
+     self.form_class = RinCreate
+
+   def form_valid(self, form, **kwargs):
+     self.save(form) #When you save the form an attribute name object is created.
+     self.response = ModalResponse("{obj} creado con éxito".format(obj=self.object), 'success')
+     #When you call the parent method you set commit to false because you have save the object.
+     return super(principal_agregar_rin, self).form_valid(form, commit=False, **kwargs)
+
+class principal_editar_rin(ModalUpdateView):
+   def __init__(self, *args, **kwargs):
+     super(principal_editar_rin, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datos"
+     self.form_class = RinEdit     
+
+   def dispatch(self, request, *args, **kwargs):
+     self.object = Rines.objects.get(pk=kwargs.get('pk'))
+     return super(principal_editar_rin, self).dispatch(request, *args, **kwargs)
+
+   def form_valid(self, form, **kwargs):
+     self.response  = ModalResponse("Información actualizada", "success")
+     return super(principal_editar_rin, self).form_valid(form, **kwargs)
+
+class principal_eliminar_rin(ModalDeleteView):
+   def __init__(self, *args, **kwargs):
+     super(principal_eliminar_rin, self).__init__(*args, **kwargs)
+     self.title = "Confirme que desea eliminar"
+
+   def dispatch(self, request, *args, **kwargs):
+     # self.object = get_user_model().objects.get(pk=kwargs.get('id'))
+     self.object = Rines.objects.get(pk=kwargs.get('pk'))     
+     return super(principal_eliminar_rin, self).dispatch(request, *args, **kwargs)
+   
+   def delete(self, request, *args, **kwargs):
+     self.response = ModalResponse("Imformación eliminada", "success")
+     super(principal_eliminar_rin, self).delete(request, *args, **kwargs)
 
 class principal(TemplateView):
     template_name = "principal.html"
@@ -426,6 +476,42 @@ class ReporteCauchosPDF(View):
     def tabla(self,pdf,y):
         encabezados = ('Descripcion')
         detalles = [(cauchos.descripcion) for cauchos in Cauchos.objects.all().order_by('descripcion')]
+        detalle_orden = Table([encabezados] + detalles, colWidths=[16 * cm])
+        detalle_orden.setStyle(TableStyle(
+            [
+                ('ALIGN',(0,0),(0,0),'CENTER'),
+                ('GRID', (0, 0), (0, 0), 1, colors.black), 
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        detalle_orden.wrapOn(pdf, 800, 600)
+        detalle_orden.drawOn(pdf, 60,y)
+
+    def get(self, request, *args, **kwargs):
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.cabecera(pdf)
+        y = 670
+        self.tabla(pdf, y)
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+class ReporteRinesPDF(View):  
+     
+    def cabecera(self,pdf):
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+        pdf.setFont("Helvetica", 16)
+        pdf.drawString(230, 790, u"LISTADO DE RINES")
+        
+    def tabla(self,pdf,y):
+        encabezados = ('Descripcion')
+        detalles = [(rines.descripcion) for rines in Rines.objects.all().order_by('descripcion')]
         detalle_orden = Table([encabezados] + detalles, colWidths=[16 * cm])
         detalle_orden.setStyle(TableStyle(
             [

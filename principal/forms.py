@@ -1,6 +1,6 @@
 from django import forms
 
-from principal.models import Socios, Marcas, Baterias, Cauchos
+from principal.models import Socios, Marcas, Baterias, Cauchos, Rines
 
 # Socios
 class PrincipalSocios():
@@ -135,4 +135,34 @@ class CauchoEdit(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CauchoEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'
+
+# Rines
+class PrincipalRines():
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Rines
+        fields = ['descripcion']
+
+class RinCreate(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Rines
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(RinCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'
+
+class RinEdit(forms.ModelForm):
+    descripcion = forms.CharField(label='Descripción')
+
+    class Meta:
+        model = Rines
+        fields = ['descripcion']
+    
+    def __init__(self, *args, **kwargs):
+        super(RinEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
         self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'

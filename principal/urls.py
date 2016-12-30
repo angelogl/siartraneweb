@@ -32,6 +32,13 @@ urlpatterns = [
     url(r'^cauchos/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_caucho.as_view()), name='caucho_delete'),
     url(r'^reporte_cauchos_pdf/$',login_required(views.ReporteCauchosPDF.as_view()), name="reporte_cauchos_pdf"), 
    
+   #Rin
+    url(r'^rines/$',login_required(views.principal_rines.as_view()), name='principal_rines'),
+    url(r'^rines/agregar/$',login_required(views.principal_agregar_rin.as_view()), name='rin_create'),    
+    url(r'^rines/editar/(?P<pk>\d+)$',login_required(views.principal_editar_rin.as_view()), name='rin_edit'),
+    url(r'^rines/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_rin.as_view()), name='rin_delete'),
+    url(r'^reporte_rines_pdf/$',login_required(views.ReporteRinesPDF.as_view()), name="reporte_rines_pdf"), 
+
     # Socio 
     url(r'^socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
     url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    

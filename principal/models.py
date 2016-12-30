@@ -43,3 +43,11 @@ class Cauchos(models.Model):
 
     def __str__(self):
         return u'%s' % (self.descripcion)
+
+class Rines(models.Model):
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "Riness"
+
+    def __str__(self):
+        return u'%s' % (self.descripcion)
