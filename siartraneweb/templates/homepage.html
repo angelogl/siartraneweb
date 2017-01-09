@@ -10,34 +10,36 @@
     <section class="jumbotron">
         <div class="container">
             {% include "_messages.html" %}
-            <h1>{% blocktrans %}Welcome to<br>pinax-project-account{% endblocktrans %}</h1>
+            <h2>{% blocktrans %}Bienvenido a <b>SIARTRANE</b>{% endblocktrans %}</h2>
             <p>
                 {% blocktrans %}
-                In addition to what is provided by the "zero" project, this project
-                provides thorough integration with django-user-accounts, adding
-                comprehensive account management functionality. It is a foundation
+                El SIARTRANE es una plataforma informática dirigida a mantener un 
+                sistema de registro y control de los transportinas volqueteros del
+                Estado Nueva Esparta. Quienes se dedican a atender
                 suitable for most sites that have user accounts.
                 {% endblocktrans %}
             </p>
             {% if not user.is_authenticated %}
             {% url "account_login" as login_url %}
             {% url "account_signup" as signup_url %}
-            <p>{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-default">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to try out the site.{% endblocktrans %}</p>
+            <p>{% blocktrans %}<a href="{{ login_url }}" class="btn btn-default">Inicia sesión</a> o <a href="{{ signup_url }}" class="btn btn-primary">regístrate</a> para acceder al entorno operativo.{% endblocktrans %}</p>
             {% else %}
             {% url "principal" as principal_url %}            
-            <p>{% blocktrans %}You can <a href="{{ principal_url }}" class="btn btn-default">Log In</a> .{% endblocktrans %}</p>
+            <p>{% blocktrans %}Inicio exitoso <a href="{{ principal_url }}" class="btn btn-default">Ingresar</a>{% endblocktrans %}</p>
             {% endif %}
         </div>
     </section>
     <section>
         <div class="container">
-            <h2 class="text-center">{% blocktrans %}What is Pinax?{% endblocktrans %}</h2>
+            <h2 class="text-center">{% blocktrans %}Qué es SIARTRANE?{% endblocktrans %}</h2>
             <p class="lead">
                 {% blocktrans %}
-                <b>Pinax</b> is an open-source platform based on Django and
-                intended to provide a starting point for websites. It takes
-                care of the things that many sites have in common, so you can
-                focus on what makes your site different.
+                <b>SIARTRANE</b> es una plataforma informática dirigida a mantener un 
+                sistema de registro y control de los transportinas volqueteros del
+                Estado Nueva Esparta. De esta forma, se logra organizar la información  
+                de este grupo de trabajadores sobre la base de una infraestructura
+                tecnológica que permita actualizar gran parte de sus operaciones.
+                datos.
                 {% endblocktrans %}
             </p>
             <div class="feature-columns">
