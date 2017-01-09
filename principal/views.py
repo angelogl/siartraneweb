@@ -9,7 +9,8 @@ from django_modalview.generic.edit import ModalFormView,ModalCreateView,ModalUpd
 from django_modalview.generic.component import ModalResponse
 from django_modalview.generic.component import ModalButton
 
-from principal.forms import PrincipalSocios, SocioEdit, SocioCreate
+from principal.forms import SocioEdit, SocioCreate
+from principal.forms import MarcaEdit, MarcaCreate
 
 from principal.models import Socios,Marcas
 
@@ -47,7 +48,7 @@ class ExampleFormViewMixin(object):
 
 # Socios
 class principal_socios2(CreateView):
-   form_class = PrincipalSocios
+   #form_class = PrincipalSocios
    template_name = 'principal_socios.html'
    success_url = 'principal_socios'
    title = (u'Principal')

@@ -12,16 +12,16 @@ urlpatterns = [
     url(r'^principal/$',login_required(views.principal.as_view()), name='principal'),  
 
     #Marca
-    url(r'^principal/marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
-    url(r'^principal/marcas/agregar/$',login_required(views.principal_agregar_marca.as_view()), name='marca_create'),    
-    url(r'^principal/marcas/editar/(?P<pk>\d+)$',login_required(views.principal_editar_marca.as_view()), name='marca_edit'),
-    url(r'^principal/marcas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_marca.as_view()), name='marca_delete'),
+    url(r'^marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
+    url(r'^marcas/agregar/$',login_required(views.principal_agregar_marca.as_view()), name='marca_create'),    
+    url(r'^marcas/editar/(?P<pk>\d+)$',login_required(views.principal_editar_marca.as_view()), name='marca_edit'),
+    url(r'^marcas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_marca.as_view()), name='marca_delete'),
 
     # Socio 
-    url(r'^principal/socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
-    url(r'^principal/socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
-    url(r'^principal/socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),
-    url(r'^principal/socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
+    url(r'^socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
+    url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
+    url(r'^socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),
+    url(r'^socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
     
     url(r'^reporte_personas_pdf/$',login_required(views.ReportePersonasPDF.as_view()), name="reporte_personas_pdf"),    
     url(r"^principal_cooperativas/$", TemplateView.as_view(template_name="principal_cooperativas.html"), name="principal_cooperativas"),

@@ -52,8 +52,8 @@ class PrincipalMarcas():
         fields = ['marca','modelo']
 
 class MarcaCreate(forms.ModelForm):
-    marca = forms.CharField(label='Marca')
-    modelo = forms.CharField(label='Modelo')
+    marca = forms.CharField(label='Marca',max_length=50)
+    modelo = forms.CharField(label='Modelo',max_length=50)
 
     class Meta:
         model = Marcas
@@ -61,12 +61,12 @@ class MarcaCreate(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(MarcaCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
-        self.fields['marca'].widget.attrs['style'] = 'width:50px;'
+        self.fields['marca'].widget.attrs['style'] = 'width:370px;'
         self.fields['modelo'].widget.attrs['style'] = 'width:370px;'		
 
 class MarcaEdit(forms.ModelForm):
-    marca = forms.CharField(label='Marca')
-    modelo = forms.CharField(label='Modelo')
+    marca = forms.CharField(label='Marca',max_length=50)
+    modelo = forms.CharField(label='Modelo',max_length=50)
 
     class Meta:
         model = Marcas
@@ -74,6 +74,6 @@ class MarcaEdit(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(MarcaEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
-        self.fields['marca'].widget.attrs['style'] = 'width:50px;'
+        self.fields['marca'].widget.attrs['style'] = 'width:370px;'
         self.fields['modelo'].widget.attrs['style'] = 'width:370px;'		
 
