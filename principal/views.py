@@ -11,7 +11,7 @@ from django_modalview.generic.component import ModalButton
 
 from principal.forms import PrincipalSocios, SocioEdit, SocioCreate
 
-from principal.models import Socios
+from principal.models import Socios, Marcas
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -60,6 +60,55 @@ class principal_socios2(CreateView):
    def get_socios_list(self):
         return Socios.objects.all().order_by("cedula")
 
+# Socios
+class principal_marcas(TemplateView):
+    template_name = "principal_marcas.html"
+    title = "My beautiful list of books"
+
+    def marcas(self):
+        return Marcas.objects.all()
+
+class principal_agregar_marca(ModalCreateView):
+
+   def __init__(self, *args, **kwargs):
+     super(principal_agregar_marca, self).__init__(*args, **kwargs)
+     self.title = "Agregue los datos"
+     self.form_class = MarcaCreate
+
+   def form_valid(self, form, **kwargs):
+     self.save(form) #When you save the form an attribute name object is created.
+     self.response = ModalResponse("{obj} creado con éxito".format(obj=self.object), 'success')
+     #When you call the parent method you set commit to false because you have save the object.
+     return super(principal_agregar_marca, self).form_valid(form, commit=False, **kwargs)
+
+class principal_editar_marca(ModalUpdateView):
+   def __init__(self, *args, **kwargs):
+     super(principal_editar_marca, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datos"
+     self.form_class = MarcaEdit     
+
+   def dispatch(self, request, *args, **kwargs):
+     self.object = Marcas.objects.get(pk=kwargs.get('pk'))
+     return super(principal_editar_marca, self).dispatch(request, *args, **kwargs)
+
+   def form_valid(self, form, **kwargs):
+     self.response  = ModalResponse("Información actualizada", "success")
+     return super(principal_editar_marca, self).form_valid(form, **kwargs)
+
+class principal_eliminar_marca(ModalDeleteView):
+   def __init__(self, *args, **kwargs):
+     super(principal_eliminar_marca, self).__init__(*args, **kwargs)
+     self.title = "Confirme que desea eliminar"
+
+   def dispatch(self, request, *args, **kwargs):
+     # self.object = get_user_model().objects.get(pk=kwargs.get('id'))
+     self.object = Marcas.objects.get(pk=kwargs.get('pk'))     
+     return super(principal_eliminar_marca, self).dispatch(request, *args, **kwargs)
+   
+   def delete(self, request, *args, **kwargs):
+     self.response = ModalResponse("Imformación eliminada", "success")
+     super(principal_eliminar_marca, self).delete(request, *args, **kwargs)
+
 class principal(TemplateView):
     template_name = "principal.html"
     title = "My beautiful list of books"
@@ -67,6 +116,7 @@ class principal(TemplateView):
     def socios(self):
         return Socios.objects.all()
 
+# Socios
 class principal_socios(TemplateView):
     template_name = "principal_socios.html"
     title = "My beautiful list of books"

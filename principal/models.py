@@ -18,3 +18,15 @@ class Socios(models.Model):
 
     #def get_absolute_url(self):
     #    return reverse('sector_edit',kwargs = {'pk':self.pk })
+
+class Marcas(models.Model):
+    marca = models.CharField(max_length=50)
+    modelo = models.CharField(max_length=50, help_text='Maximo 50 caracteres')
+    class Meta:
+        verbose_name_plural = "Marcass"
+
+    def __str__(self):
+        return u'%s-%s' % (self.marca,self.modelo)
+
+    #def get_absolute_url(self):
+    #    return reverse('sector_edit',kwargs = {'pk':self.pk })

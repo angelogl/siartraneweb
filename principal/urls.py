@@ -9,7 +9,15 @@ from principal import views
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^principal/$',login_required(views.principal.as_view()), name='principal'),   
+    url(r'^principal/$',login_required(views.principal.as_view()), name='principal'),  
+
+    #Marca
+    url(r'^principal/marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
+    url(r'^principal/marcas/agregar/$',login_required(views.principal_agregar_marca.as_view()), name='marca_create'),    
+    url(r'^principal/marcas/editar/(?P<pk>\d+)$',login_required(views.principal_editar_marca.as_view()), name='marca_edit'),
+    url(r'^principal/marcas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_marca.as_view()), name='marca_delete'),
+
+    # Socio 
     url(r'^principal/socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
     url(r'^principal/socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
     url(r'^principal/socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),

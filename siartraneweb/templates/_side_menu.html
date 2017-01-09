@@ -47,7 +47,8 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        <a href="http://www.jquery2dotnet.com">Marcas</a> <span class="label label-success">$ 320</span>
+                                        {% url "principal_marcas" as principal_marcas_url %}
+                                        <span class="glyphicon glyphicon-copyright-mark text-primary"></span><a href="{{ principal_marcas_url }}">Marcas</a>
                                     </td>
                                 </tr>
                                 <tr>
