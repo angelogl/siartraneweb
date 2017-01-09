@@ -11,7 +11,7 @@ from django_modalview.generic.component import ModalButton
 
 from principal.forms import PrincipalSocios, SocioEdit, SocioCreate
 
-from principal.models import Socios, Marcas
+from principal.models import Socios,Marcas
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
