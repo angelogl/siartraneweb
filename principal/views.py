@@ -240,7 +240,7 @@ class ReporteMarcasPDF(View):
         #Creamos una tupla de encabezados para nuestra tabla
         encabezados = ('Marca', 'Modelo')
         #Creamos una lista de tuplas que van a contener a las personas
-        detalles = [(marcas.marca, marcas.modelo) for marcas in Marcas.objects.all()]
+        detalles = [(marcas.marca, marcas.modelo) for marcas in Marcas.objects.all().order_by('marca')]
         #Establecemos el tamaño de cada una de las columnas de la tabla
         detalle_orden = Table([encabezados] + detalles, colWidths=[8 * cm, 8 * cm])
         #Aplicamos estilos a las celdas de la tabla
