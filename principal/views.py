@@ -170,7 +170,7 @@ class ReportePersonasPDF(View):
      
     def cabecera(self,pdf):
         #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-        archivo_imagen = settings.MEDIA_ROOT+'/images/cuvolene.png'
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
         #archivo_imagen = 'static/images/cuvolene.png'
         #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
         pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
@@ -178,9 +178,7 @@ class ReportePersonasPDF(View):
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 16)
         #Dibujamos una cadena en la ubicación X,Y especificada
-        pdf.drawString(230, 790, u"PYTHON PIURA")
-        pdf.setFont("Helvetica", 14)
-        pdf.drawString(200, 770, u"REPORTE DE PERSONAS")
+        pdf.drawString(230, 790, u"LISTADO DE SOCIOS")
 
     def tabla(self,pdf,y):
         #Creamos una tupla de encabezados para neustra tabla
@@ -214,7 +212,7 @@ class ReportePersonasPDF(View):
         pdf = canvas.Canvas(buffer)
         #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
         self.cabecera(pdf)
-        y = 600
+        y = 670
         self.tabla(pdf, y)
         #Con show page hacemos un corte de página para pasar a la siguiente
         pdf.showPage()
