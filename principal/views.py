@@ -228,7 +228,7 @@ class ReporteMarcasPDF(View):
      
     def cabecera(self,pdf):
         #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
-        archivo_imagen = settings.MEDIA_ROOT+'/images/cuvolene.png'
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
         #archivo_imagen = 'static/images/cuvolene.png'
         #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
         pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
