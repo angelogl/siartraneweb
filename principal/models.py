@@ -51,3 +51,20 @@ class Rines(models.Model):
 
     def __str__(self):
         return u'%s' % (self.descripcion)
+
+class TipoAceite(models.Model):
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "TipoAceitess"
+
+    def __str__(self):
+        return u'%s' % (self.descripcion)
+
+class Aceites(models.Model):
+    tipo = models.ForeignKey(TipoAceite)    
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "Aceitess"
+
+    def __str__(self):
+        return u'%s-%s' % (self.tipo,self.descripcion)

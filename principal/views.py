@@ -14,8 +14,9 @@ from principal.forms import MarcaEdit, MarcaCreate
 from principal.forms import BateriaEdit, BateriaCreate
 from principal.forms import CauchoEdit, CauchoCreate
 from principal.forms import RinEdit, RinCreate
+from principal.forms import AceiteEdit, AceiteCreate
 
-from principal.models import Socios,Marcas,Baterias,Cauchos,Rines
+from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -260,6 +261,55 @@ class principal_eliminar_rin(ModalDeleteView):
      self.response = ModalResponse("Imformación eliminada", "success")
      super(principal_eliminar_rin, self).delete(request, *args, **kwargs)
 
+# Aceite
+class principal_aceites(TemplateView):
+    template_name = "principal_aceites.html"
+    title = "My beautiful list of books"
+
+    def aceites(self):
+        return Aceites.objects.all()
+
+class principal_agregar_aceite(ModalCreateView):
+
+   def __init__(self, *args, **kwargs):
+     super(principal_agregar_aceite, self).__init__(*args, **kwargs)
+     self.title = "Agregue los datos"
+     self.form_class = AceiteCreate
+
+   def form_valid(self, form, **kwargs):
+     self.save(form) #When you save the form an attribute name object is created.
+     self.response = ModalResponse("{obj} creado con éxito".format(obj=self.object), 'success')
+     #When you call the parent method you set commit to false because you have save the object.
+     return super(principal_agregar_aceite, self).form_valid(form, commit=False, **kwargs)
+
+class principal_editar_aceite(ModalUpdateView):
+   def __init__(self, *args, **kwargs):
+     super(principal_editar_aceite, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datos"
+     self.form_class = AceiteEdit     
+
+   def dispatch(self, request, *args, **kwargs):
+     self.object = Aceites.objects.get(pk=kwargs.get('pk'))
+     return super(principal_editar_aceite, self).dispatch(request, *args, **kwargs)
+
+   def form_valid(self, form, **kwargs):
+     self.response  = ModalResponse("Información actualizada", "success")
+     return super(principal_editar_aceite, self).form_valid(form, **kwargs)
+
+class principal_eliminar_aceite(ModalDeleteView):
+   def __init__(self, *args, **kwargs):
+     super(principal_eliminar_aceite, self).__init__(*args, **kwargs)
+     self.title = "Confirme que desea eliminar"
+
+   def dispatch(self, request, *args, **kwargs):
+     # self.object = get_user_model().objects.get(pk=kwargs.get('id'))
+     self.object = Aceites.objects.get(pk=kwargs.get('pk'))     
+     return super(principal_eliminar_aceite, self).dispatch(request, *args, **kwargs)
+   
+   def delete(self, request, *args, **kwargs):
+     self.response = ModalResponse("Imformación eliminada", "success")
+     super(principal_eliminar_aceite, self).delete(request, *args, **kwargs)
+
 class principal(TemplateView):
     template_name = "principal.html"
     title = "My beautiful list of books"
@@ -502,6 +552,8 @@ class ReporteCauchosPDF(View):
         return response
 
 class ReporteRinesPDF(View):  
+
+
      
     def cabecera(self,pdf):
         archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
@@ -530,6 +582,53 @@ class ReporteRinesPDF(View):
         self.cabecera(pdf)
         y = 670
         self.tabla(pdf, y)
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+class ReporteAceitesPDF(View):  
+     
+    def cabecera(self,pdf):
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+        
+        pdf.setFont("Helvetica", 16)
+        pdf.drawString(230, 790, u"LISTADO DE ACEITES")
+        
+    def tabla(self,pdf,y):
+        encabezados = ('Tipo', 'Descripcion')
+        detalles = [(aceites.tipo, aceites.descripcion) for aceites in Aceites.objects.all().order_by('tipo')]
+        detalle_orden = Table([encabezados] + detalles, colWidths=[8 * cm, 8 * cm])
+        detalle_orden.setStyle(TableStyle(
+            [
+                #La primera fila(encabezados) va a estar centrada
+                ('ALIGN',(0,0),(1,0),'CENTER'),
+                #Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (1, 0), 1, colors.black), 
+                #El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        #Establecemos el tamaño de la hoja que ocupará la tabla 
+        detalle_orden.wrapOn(pdf, 800, 600)
+        #Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 60,y)
+
+    def get(self, request, *args, **kwargs):
+        #Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        #Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        y = 670
+        self.tabla(pdf, y)
+        #Con show page hacemos un corte de página para pasar a la siguiente
         pdf.showPage()
         pdf.save()
         pdf = buffer.getvalue()

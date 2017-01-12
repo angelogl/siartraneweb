@@ -44,6 +44,13 @@ urlpatterns = [
     url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
     url(r'^socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),
     url(r'^socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
+
+    #Aceite
+    url(r'^aceites/$',login_required(views.principal_aceites.as_view()), name='principal_aceites'),
+    url(r'^aceites/agregar/$',login_required(views.principal_agregar_aceite.as_view()), name='aceite_create'),    
+    url(r'^aceites/editar/(?P<pk>\d+)$',login_required(views.principal_editar_aceite.as_view()), name='aceite_edit'),
+    url(r'^aceites/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_aceite.as_view()), name='aceite_delete'),
+    url(r'^reporte_aceites_pdf/$',login_required(views.ReporteAceitesPDF.as_view()), name="reporte_aceites_pdf"),    
     
     url(r'^reporte_personas_pdf/$',login_required(views.ReportePersonasPDF.as_view()), name="reporte_personas_pdf"),     
     url(r"^principal_cooperativas/$", TemplateView.as_view(template_name="principal_cooperativas.html"), name="principal_cooperativas"),
