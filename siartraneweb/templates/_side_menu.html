@@ -77,7 +77,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <a href="http://www.jquery2dotnet.com">Filtros</a>
+                                        {% url "principal_filtros" as principal_aceites_url %}
+                                        <span class="glyphicon glyphicon-filter text-primary"></span><a href="{{ principal_aceites_url }}">Filtros</a>
                                     </td>
                                 </tr>
                             </table>

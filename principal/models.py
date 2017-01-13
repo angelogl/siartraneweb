@@ -68,3 +68,20 @@ class Aceites(models.Model):
 
     def __str__(self):
         return u'%s-%s' % (self.tipo,self.descripcion)
+
+class TipoFiltro(models.Model):
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "TipoFiltross"
+
+    def __str__(self):
+        return u'%s' % (self.descripcion)
+
+class Filtros(models.Model):
+    tipo = models.ForeignKey(TipoFiltro)    
+    descripcion = models.CharField(max_length=50)
+    class Meta:
+        verbose_name_plural = "Filtross"
+
+    def __str__(self):
+        return u'%s-%s' % (self.tipo,self.descripcion)

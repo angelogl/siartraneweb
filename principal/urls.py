@@ -52,6 +52,12 @@ urlpatterns = [
     url(r'^aceites/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_aceite.as_view()), name='aceite_delete'),
     url(r'^reporte_aceites_pdf/$',login_required(views.ReporteAceitesPDF.as_view()), name="reporte_aceites_pdf"),    
     
+  #Filtro
+    url(r'^filtros/$',login_required(views.principal_filtros.as_view()), name='principal_filtros'),
+    url(r'^filtros/agregar/$',login_required(views.principal_agregar_filtro.as_view()), name='filtro_create'),    
+    url(r'^filtros/editar/(?P<pk>\d+)$',login_required(views.principal_editar_filtro.as_view()), name='filtro_edit'),
+    url(r'^filtros/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_filtro.as_view()), name='filtro_delete'),
+    url(r'^reporte_filtros_pdf/$',login_required(views.ReporteFiltrosPDF.as_view()), name="reporte_filtros_pdf"),        
     url(r'^reporte_personas_pdf/$',login_required(views.ReportePersonasPDF.as_view()), name="reporte_personas_pdf"),     
     url(r"^principal_cooperativas/$", TemplateView.as_view(template_name="principal_cooperativas.html"), name="principal_cooperativas"),
 ]
