@@ -18,7 +18,7 @@ class PrincipalCooperativas():
 
     class Meta:
         model = Cooperativas
-        fields = ['rif','descripcion','nombre']
+        fields = ['rif','descripcion','nombres']
 
 class CooperativaCreate(forms.ModelForm):
     rif = forms.CharField(label='Rif',initial='X-00000000-0')
@@ -54,9 +54,9 @@ class CooperativaEdit(forms.ModelForm):
     descripcion = forms.CharField(label='Descripcion')
     nombre = forms.CharField(label='Nombre')
     direccion = forms.CharField(label='Direccion')
-    CedRepLegal = forms.CharField(label='Cédula Representante Legal')
-    NomRepLegal = forms.CharField(label='Nombre y Apellido Representante Legal')
-    TelRepLegal = forms.CharField(label='Teléfono Representante Legal')
+    CedRepLegal = forms.CharField(label='Cédula del Representante')
+    NomRepLegal = forms.CharField(label='Nombres del Representante')
+    TelRepLegal = forms.CharField(label='Teléfono del Representante')
     telefono1 = forms.CharField(label='Teléfono Oficina')
     telefono2 = forms.CharField(label='Teléfono Móvil')
     correo = forms.CharField(label='Correo')
@@ -67,16 +67,16 @@ class CooperativaEdit(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CooperativaEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
-        self.fields['rif'].widget.attrs['style'] = 'width:50px;'
+        self.fields['rif'].widget.attrs['style'] = 'width:150px;'
         self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'		
         self.fields['nombre'].widget.attrs['style'] = 'width:370px;'	
         self.fields['direccion'].widget.attrs['style'] = 'width:370px;'		
-        self.fields['CedRepLegal'].widget.attrs['style'] = 'width:50px;'	
+        self.fields['CedRepLegal'].widget.attrs['style'] = 'width:150px;'	
         self.fields['NomRepLegal'].widget.attrs['style'] = 'width:370px;'		
         self.fields['TelRepLegal'].widget.attrs['style'] = 'width:370px;'	
         self.fields['telefono1'].widget.attrs['style'] = 'width:370px;'		
         self.fields['telefono2'].widget.attrs['style'] = 'width:370px;'	
-        self.fields['correo'].widget.attrs['style'] = 'width:370px;'	
+        self.fields['correo'].widget.attrs['style'] = 'width:370px;'		
 
 # Socios
 class PrincipalSocios():
