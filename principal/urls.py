@@ -11,6 +11,13 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^principal/$',login_required(views.principal.as_view()), name='principal'),  
 
+    # Cooperativa 
+    url(r'^cooperativas/$',login_required(views.principal_cooperativas.as_view()), name='principal_coop'),
+    url(r'^cooperativas/agregar/$',login_required(views.principal_agregar_cooperativa.as_view()), name='cooperativa_create'),    
+    url(r'^cooperativas/editar/(?P<pk>\d+)$',login_required(views.principal_editar_cooperativa.as_view()), name='cooperativa_edit'),
+    url(r'^cooperativas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_cooperativa.as_view()), name='cooperativa_delete'),
+    url(r'^reporte_cooperativas_pdf/$',login_required(views.ReporteCooperativasPDF.as_view()), name="reporte_cooperativas_pdf"),        
+
     #Marca
     url(r'^marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
     url(r'^marcas/agregar/$',login_required(views.principal_agregar_marca.as_view()), name='marca_create'),    

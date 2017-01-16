@@ -1,6 +1,26 @@
 from django.db import models
 
 # Create your models here.
+class Cooperativas(models.Model):
+    rif = models.CharField(max_length=12,unique=True) #V-09306944-3
+    descripcion = models.CharField(max_length=100, help_text='Maximo 100 caracteres')
+    nombre = models.TextField(max_length=100, help_text='Maximo 100 caracteres')
+    direccion = models.TextField(max_length=200, help_text='Maximo 200 caracteres')
+    CedRepLegal = models.CharField(max_length=9)
+    NomRepLegal = models.TextField(max_length=100, help_text='Maximo 100 caracteres')    
+    TelRepLegal = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
+    telefono1 = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
+    telefono2 = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
+    correo = models.EmailField(max_length=200,help_text='Maximo 200 caracteres')
+    class Meta:
+        verbose_name_plural = "Cooperaivass"
+
+    def __str__(self):
+        return u'%s' % (self.nombre)
+
+    #def get_absolute_url(self):
+    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
+
 class Socios(models.Model):
     cedula = models.CharField(max_length=9,unique=True)
     apellidos = models.CharField(max_length=100, help_text='Maximo 100 caracteres')

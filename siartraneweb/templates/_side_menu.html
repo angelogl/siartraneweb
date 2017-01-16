@@ -11,13 +11,14 @@
                             <table class="table">
                                 <tr>
                                     <td>
-                                        {% url "principal_socios" as principal_socios_url %}   
-                                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{{ principal_socios_url }}">Cooperativas</a>
+                                        {% url "principal_coop" as principal_cooperativas_url %}   
+                                        <span class="glyphicon glyphicon-equalizer text-primary"></span><a href="{{ principal_cooperativas_url }}">Cooperativas</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <span class="glyphicon glyphicon-flash text-success"></span><a href="http://www.jquery2dotnet.com">Socios</a>
+                                        {% url "principal_socios" as principal_socios_url %}   
+                                        <span class="glyphicon glyphicon-user text-primary"></span><a href="{{ principal_socios_url }}">Socios</a>
                                     </td>
                                 </tr>
                                 <tr>
