@@ -89,35 +89,59 @@ class PrincipalSocios():
         fields = ['cedula','apellidos','nombres']
 
 class SocioCreate(forms.ModelForm):
-    cedula = forms.CharField(label='Cedula',initial='X00000000',max_length=9)
+    cooperativa = ModelChoiceField(queryset=Cooperativas.objects.all(), required=True, empty_label=(u'Seleciona Cooperativa'), label='Cooperativa')    
+    cedula = forms.CharField(label='Cedula',initial='V00000000',max_length=9)
     apellidos = forms.CharField(label='Apellidos')
     nombres = forms.CharField(label='Nombres')
+    direccion = forms.CharField(label='Dirección')
+    telefono1 = forms.CharField(label='Tlf. Móvil')
+    telefono2 = forms.CharField(label='Tlf. Oficina')
+    telefono3 = forms.CharField(label='Tlf. Casa')
+    correo = forms.CharField(label='Correo')
     
     class Meta:
         model = Socios
-        fields = ['cedula', 'apellidos', 'nombres']
+        fields = ['cooperativa','cedula', 'apellidos', 'nombres','direccion','telefono1','telefono2','telefono3','correo']
     
     def __init__(self, *args, **kwargs):
         super(SocioCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
-        self.fields['cedula'].widget.attrs['style'] = 'width:50px;'
+        self.fields['cooperativa'].widget.attrs['style'] = 'width:370px;'        
+        self.fields['cedula'].widget.attrs['style'] = 'width:150px;'
         self.fields['apellidos'].widget.attrs['style'] = 'width:370px;'		
         self.fields['nombres'].widget.attrs['style'] = 'width:370px;'	
+        self.fields['direccion'].widget.attrs['style'] = 'width:370px;'		
+        self.fields['telefono1'].widget.attrs['style'] = 'width:150px;'	
+        self.fields['telefono2'].widget.attrs['style'] = 'width:150px;'		
+        self.fields['telefono3'].widget.attrs['style'] = 'width:150px;'	
+        self.fields['correo'].widget.attrs['style'] = 'width:370px;'		
 
 class SocioEdit(forms.ModelForm):
-    cedula = forms.CharField(label='Cedula',initial='X00000000',max_length=9)
+    cooperativa = ModelChoiceField(queryset=Cooperativas.objects.all(), required=True, empty_label=(u'Seleciona Cooperativa'), label='Cooperativa')    
+    cedula = forms.CharField(label='Cedula',initial='V00000000',max_length=9)
     apellidos = forms.CharField(label='Apellidos')
     nombres = forms.CharField(label='Nombres')
+    direccion = forms.CharField(label='Dirección')
+    telefono1 = forms.CharField(label='Tlf. Móvil')
+    telefono2 = forms.CharField(label='Tlf. Oficina')
+    telefono3 = forms.CharField(label='Tlf. Casa')
+    correo = forms.CharField(label='Correo')
     
     class Meta:
         model = Socios
-        fields = ['cedula', 'apellidos', 'nombres']
+        fields = ['cooperativa','cedula', 'apellidos', 'nombres','direccion','telefono1','telefono2','telefono3','correo']
     
     def __init__(self, *args, **kwargs):
         super(SocioEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
-        self.fields['cedula'].widget.attrs['style'] = 'width:50px;'
+        self.fields['cooperativa'].widget.attrs['style'] = 'width:370px;'        
+        self.fields['cedula'].widget.attrs['style'] = 'width:150px;'
         self.fields['apellidos'].widget.attrs['style'] = 'width:370px;'		
         self.fields['nombres'].widget.attrs['style'] = 'width:370px;'	
-
+        self.fields['direccion'].widget.attrs['style'] = 'width:370px;'		
+        self.fields['telefono1'].widget.attrs['style'] = 'width:150px;'	
+        self.fields['telefono2'].widget.attrs['style'] = 'width:150px;'		
+        self.fields['telefono3'].widget.attrs['style'] = 'width:150px;'	
+        self.fields['correo'].widget.attrs['style'] = 'width:370px;'
+        
 # Marcas
 class PrincipalMarcas():
     marca = forms.CharField(label='Marca')

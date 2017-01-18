@@ -22,6 +22,7 @@ class Cooperativas(models.Model):
     #    return reverse('sector_edit',kwargs = {'pk':self.pk })
 
 class Socios(models.Model):
+    cooperativa = models.ForeignKey(Cooperativas) 
     cedula = models.CharField(max_length=9,unique=True)
     apellidos = models.CharField(max_length=100, help_text='Maximo 100 caracteres')
     nombres = models.TextField(max_length=100, help_text='Maximo 100 caracteres')

@@ -180,7 +180,13 @@ class principal_socios2(CreateView):
        return context_data
 
    def get_socios_list(self):
-        return Socios.objects.all().order_by("cedula")
+        query = self.request.GET.get('q', '')
+        if query:
+           qset = (  Q(nombre__icontains=query) | Q(nombres__icontains=query) | Q(apellidos__icontains=query))
+           results = Socios.objects.filter(qset).distinct()
+        else:
+           results = Socios.objects.all()
+        return results       
 
 # Marcas
 class principal_marcas(TemplateView):
@@ -490,7 +496,13 @@ class principal_socios(TemplateView):
     title = "My beautiful list of books"
 
     def socios(self):
-        return Socios.objects.all()
+        query = self.request.GET.get('q', '')
+        if query:
+           qset = ( Q(nombres__icontains=query) | Q(apellidos__icontains=query))
+           results = Socios.objects.filter(qset).distinct()
+        else:
+           results = Socios.objects.all()
+        return results   
 
 class principal_agregar_socio(ModalCreateView):
 
@@ -534,7 +546,7 @@ class principal_eliminar_socio(ModalDeleteView):
      super(principal_eliminar_socio, self).delete(request, *args, **kwargs)
 
 
-class ReportePersonasPDF(View):  
+class ReporteSociosPDF(View):  
      
     def cabecera(self,pdf):
         #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes

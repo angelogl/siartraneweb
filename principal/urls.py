@@ -16,7 +16,14 @@ urlpatterns = [
     url(r'^cooperativas/agregar/$',login_required(views.principal_agregar_cooperativa.as_view()), name='cooperativa_create'),    
     url(r'^cooperativas/editar/(?P<pk>\d+)$',login_required(views.principal_editar_cooperativa.as_view()), name='cooperativa_edit'),
     url(r'^cooperativas/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_cooperativa.as_view()), name='cooperativa_delete'),
-    url(r'^reporte_cooperativas_pdf/$',login_required(views.ReporteCooperativasPDF.as_view()), name="reporte_cooperativas_pdf"),        
+    url(r'^reporte_cooperativas_pdf/$',login_required(views.ReporteCooperativasPDF.as_view()), name="reporte_cooperativas_pdf"), 
+
+    # Socio 
+    url(r'^socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
+    url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
+    url(r'^socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),
+    url(r'^socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
+    url(r'^reporte_socios_pdf/$',login_required(views.ReporteSociosPDF.as_view()), name="reporte_socios_pdf"),               
 
     #Marca
     url(r'^marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
@@ -46,11 +53,6 @@ urlpatterns = [
     url(r'^rines/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_rin.as_view()), name='rin_delete'),
     url(r'^reporte_rines_pdf/$',login_required(views.ReporteRinesPDF.as_view()), name="reporte_rines_pdf"), 
 
-    # Socio 
-    url(r'^socios/$',login_required(views.principal_socios.as_view()), name='principal_socios'),
-    url(r'^socios/agregar/$',login_required(views.principal_agregar_socio.as_view()), name='socio_create'),    
-    url(r'^socios/editar/(?P<pk>\d+)$',login_required(views.principal_editar_socio.as_view()), name='socio_edit'),
-    url(r'^socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
 
     #Aceite
     url(r'^aceites/$',login_required(views.principal_aceites.as_view()), name='principal_aceites'),
@@ -65,7 +67,7 @@ urlpatterns = [
     url(r'^filtros/editar/(?P<pk>\d+)$',login_required(views.principal_editar_filtro.as_view()), name='filtro_edit'),
     url(r'^filtros/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_filtro.as_view()), name='filtro_delete'),
     url(r'^reporte_filtros_pdf/$',login_required(views.ReporteFiltrosPDF.as_view()), name="reporte_filtros_pdf"),        
-    url(r'^reporte_personas_pdf/$',login_required(views.ReportePersonasPDF.as_view()), name="reporte_personas_pdf"),     
+   
     url(r"^principal_cooperativas/$", TemplateView.as_view(template_name="principal_cooperativas.html"), name="principal_cooperativas"),
 ]
 
