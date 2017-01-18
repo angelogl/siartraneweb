@@ -18,18 +18,18 @@
            <table class="table table-hover" id="table_socios">
                  <thead>
                     <tr>
-                       <th>{% trans 'Cédula' %}</th>
-                       <th>{% trans 'Apellidos' %}</th>
-                       <th>{% trans 'Nombres' %}</th>                       
+                       <th>{% trans 'Nombres' %}</th>
+                       <th>{% trans 'Cooperativa' %}</th>
+                       <th>{% trans 'Teléfonos' %}</th>                       
                       <th colspan="2" align="center">{% trans 'Acciones' %}</th
                     </tr>
                  </thead>
                  <tbody>
                     {% for socios in view.socios %}
                          <tr>
-                           <td>{{ socios.cedula }}</td>
-                           <td>{{ socios.apellidos|default:'' }}</td>
-                           <td>{{ socios.nombres|default:'' }}</td>
+                           <td>{{ socios }}</td>
+                           <td>{{ socios.cooperativa|default:'' }}</td>
+                           <td>{{ socios.telefonos|default:'' }}</td>
                            <td><a id="update_socio{{ socios.id }}" href="{% url 'socio_edit' socios.id %}" class="btn btn-primary btn-ms">Editar</a></td>
                            <td><a id="delete_socio{{ socios.id }}" href="{% url 'socio_delete' socios.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
                          </tr>

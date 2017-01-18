@@ -18,6 +18,8 @@ class Cooperativas(models.Model):
     def __str__(self):
         return u'%s' % (self.nombre)
 
+    def __unicode__(self):
+        return self.nombre
     #def get_absolute_url(self):
     #    return reverse('sector_edit',kwargs = {'pk':self.pk })
 
@@ -31,11 +33,16 @@ class Socios(models.Model):
     telefono2 = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
     telefono3 = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
     correo = models.EmailField(max_length=200,help_text='Maximo 200 caracteres')
+
+    @property
+    def telefonos(self):
+        return self.telefono1 + ' ' + self.telefono2 + ' ' + self.telefono3
+
     class Meta:
         verbose_name_plural = "Socioss"
 
     def __str__(self):
-        return u'%s-%s' % (self.apellidos,self.nombres)
+        return u'%s, %s' % (self.apellidos,self.nombres)
 
     #def get_absolute_url(self):
     #    return reverse('sector_edit',kwargs = {'pk':self.pk })

@@ -498,7 +498,7 @@ class principal_socios(TemplateView):
     def socios(self):
         query = self.request.GET.get('q', '')
         if query:
-           qset = ( Q(nombres__icontains=query) | Q(apellidos__icontains=query))
+           qset = ( Q(nombres__icontains=query) | Q(apellidos__icontains=query) | Q(cooperativa__nombre__icontains=query))
            results = Socios.objects.filter(qset).distinct()
         else:
            results = Socios.objects.all()
