@@ -19,7 +19,13 @@
                                 <li><a href="{% url 'reporte_cooperativas_pdf' %}">Ordenado por nombre</a></li>
                             </ul>
                         </li>
-                   </ul>                        
+                   </ul>
+                   <form class="navbar-form navbar-left" method='get' action="." id="sendForm">
+                        <div class="form-group">
+                             <input type="text" class="form-control" placeholder="Datos" name="q" value="{{ query|escape }}">
+                        </div>
+                       <button type="submit" class="btn btn-default">Buscar</button>
+                  </form>                        
                 </div>
             </div>
         </nav>

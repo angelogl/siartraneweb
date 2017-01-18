@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.shortcuts import render_to_response
+from django.http import HttpResponseBadRequest, HttpResponse, HttpRequest
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView,TemplateView,ListView,DetailView,View
+from django.db.models import Q
 
 from django_modalview.generic.base import ModalTemplateView
 from django_modalview.generic.edit import ModalFormView,ModalCreateView,ModalUpdateView,ModalDeleteView
@@ -58,7 +60,13 @@ class principal_cooperativas(TemplateView):
     title = "My beautiful list of books"
 
     def cooperativas(self):
-        return Cooperativas.objects.all()
+        query = self.request.GET.get('q', '')
+        if query:
+           qset = (  Q(nombre__icontains=query) | Q(descripcion__icontains=query) )
+           results = Cooperativas.objects.filter(qset).distinct()
+        else:
+           results = Cooperativas.objects.all()
+        return results
 
 class principal_agregar_cooperativa(ModalCreateView):
 

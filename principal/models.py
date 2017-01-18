@@ -13,7 +13,7 @@ class Cooperativas(models.Model):
     telefono2 = models.CharField(max_length=12,help_text='Maximo 12 caracteres')
     correo = models.EmailField(max_length=200,help_text='Maximo 200 caracteres')
     class Meta:
-        verbose_name_plural = "Cooperaivass"
+        verbose_name_plural = "Cooperativass"
 
     def __str__(self):
         return u'%s' % (self.nombre)
