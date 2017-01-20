@@ -56,6 +56,26 @@ class Marcas(models.Model):
     def __str__(self):
         return u'%s-%s' % (self.marca,self.modelo)
 
+class Vehiculos(models.Model):
+    socio = models.ForeignKey(Socios) 
+    placa = models.CharField(max_length=10)
+    m3 = models.CharField(max_length=9)
+    MarcaModelo = models.ForeignKey(Marcas)
+    GrasaChasis = models.CharField(max_length=10) 
+    SerialCarroceria = models.CharField(max_length=20)
+    Color = models.CharField(max_length=20)
+    Ano = models.CharField(max_length=20)
+    CapacidadCarga = models.CharField(max_length=10)    
+
+    class Meta:
+        verbose_name_plural = "Vehiculoss"
+
+    def __str__(self):
+        return u'%s' % (self.placa)
+
+    #def get_absolute_url(self):
+    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
+
 class Baterias(models.Model):
     descripcion = models.CharField(max_length=50)
     class Meta:
@@ -63,6 +83,19 @@ class Baterias(models.Model):
 
     def __str__(self):
         return u'%s' % (self.descripcion)
+
+class VehiculoBaterias(models.Model):
+    vehiculos = models.ForeignKey(Baterias, related_name='vehiculo_items')
+    baterias = models.ForeignKey(Baterias, related_name='vehiculo_baterias')
+
+    class Meta:
+        verbose_name_plural = "VehiculosBateriass"
+
+    def __str__(self):
+        return u'%s' % (self.baterias)
+
+    #def get_absolute_url(self):
+    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
 
 class Cauchos(models.Model):
     descripcion = models.CharField(max_length=50)

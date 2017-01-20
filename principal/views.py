@@ -13,6 +13,7 @@ from django_modalview.generic.component import ModalButton
 
 from principal.forms import CooperativaEdit, CooperativaCreate
 from principal.forms import SocioEdit, SocioCreate
+from principal.forms import VehiculoEdit, VehiculoCreate
 from principal.forms import MarcaEdit, MarcaCreate
 from principal.forms import BateriaEdit, BateriaCreate
 from principal.forms import CauchoEdit, CauchoCreate
@@ -21,6 +22,7 @@ from principal.forms import AceiteEdit, AceiteCreate
 from principal.forms import FiltroEdit, FiltroCreate
 
 from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites,Filtros,Cooperativas
+from principal.models import Vehiculos
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -166,6 +168,117 @@ class ReporteCooperativasPDF(View):
         response.write(pdf)
         return response
 
+# Vehiculos
+class principal_vehiculos(TemplateView):
+    template_name = "principal_vehiculos.html"
+    title = "My beautiful list of books"
+
+    def vehiculos(self):
+        query = self.request.GET.get('q', '')
+        if query:
+           qset = ( Q(nombres__icontains=query) | Q(apellidos__icontains=query) | Q(cooperativa__nombre__icontains=query))
+           results = Vehiculos.objects.filter(qset).distinct()
+        else:
+           results = Vehiculos.objects.all()
+        return results   
+
+class principal_agregar_vehiculo(ModalCreateView):
+
+   def __init__(self, *args, **kwargs):
+     super(principal_agregar_vehiculo, self).__init__(*args, **kwargs)
+     self.title = "Agregue los datos"
+     self.form_class = VehiculoCreate
+
+   def form_valid(self, form, **kwargs):
+     self.save(form) #When you save the form an attribute name object is created.
+     self.response = ModalResponse("{obj} creado con éxito".format(obj=self.object), 'success')
+     #When you call the parent method you set commit to false because you have save the object.
+     return super(principal_agregar_vehiculo, self).form_valid(form, commit=False, **kwargs)
+
+class principal_editar_vehiculo(ModalUpdateView):
+   def __init__(self, *args, **kwargs):
+     super(principal_editar_vehiculo, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datos"
+     self.form_class = VehiculoEdit     
+
+   def dispatch(self, request, *args, **kwargs):
+     self.object = Vehiculos.objects.get(pk=kwargs.get('pk'))
+     return super(principal_editar_vehiculo, self).dispatch(request, *args, **kwargs)
+
+   def form_valid(self, form, **kwargs):
+     self.response  = ModalResponse("Información actualizada", "success")
+     return super(principal_editar_vehiculo, self).form_valid(form, **kwargs)
+
+class principal_eliminar_vehiculo(ModalDeleteView):
+   def __init__(self, *args, **kwargs):
+     super(principal_eliminar_vehiculo, self).__init__(*args, **kwargs)
+     self.title = "Confirme que desea eliminar"
+
+   def dispatch(self, request, *args, **kwargs):
+     # self.object = get_user_model().objects.get(pk=kwargs.get('id'))
+     self.object = Vehiculos.objects.get(pk=kwargs.get('pk'))     
+     return super(principal_eliminar_vehiculo, self).dispatch(request, *args, **kwargs)
+   
+   def delete(self, request, *args, **kwargs):
+     self.response = ModalResponse("Imformación eliminada", "success")
+     super(principal_eliminar_vehiculo, self).delete(request, *args, **kwargs)
+
+
+class ReporteVehiculosPDF(View):  
+     
+    def cabecera(self,pdf):
+        #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+        #archivo_imagen = 'static/images/cuvolene.png'
+        #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
+        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+        
+        #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+        pdf.setFont("Helvetica", 16)
+        #Dibujamos una cadena en la ubicación X,Y especificada
+        pdf.drawString(230, 790, u"LISTADO DE VEHICULOS")
+
+    def tabla(self,pdf,y):
+        #Creamos una tupla de encabezados para neustra tabla
+        encabezados = ('Socio', 'Placa', 'Marca/Modelo', 'Color')
+        #Creamos una lista de tuplas que van a contener a las personas
+        detalles = [(vehiculos.socio, vehiculos.placa, vehiculos.MarcaModelo, vehiculos.color) for vehiculos in Vehiculos.objects.all()]
+        #Establecemos el tamaño de cada una de las columnas de la tabla
+        detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 5 * cm, 5 * cm, 5 * cm])
+        #Aplicamos estilos a las celdas de la tabla
+        detalle_orden.setStyle(TableStyle(
+            [
+                #La primera fila(encabezados) va a estar centrada
+                ('ALIGN',(0,0),(3,0),'CENTER'),
+                #Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                #El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        #Establecemos el tamaño de la hoja que ocupará la tabla 
+        detalle_orden.wrapOn(pdf, 800, 600)
+        #Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 60,y)
+
+    def get(self, request, *args, **kwargs):
+        #Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        #Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        y = 670
+        self.tabla(pdf, y)
+        #Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
 
 # Socios
 class principal_socios2(CreateView):

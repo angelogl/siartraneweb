@@ -25,6 +25,13 @@ urlpatterns = [
     url(r'^socios/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_socio.as_view()), name='socio_delete'),
     url(r'^reporte_socios_pdf/$',login_required(views.ReporteSociosPDF.as_view()), name="reporte_socios_pdf"),               
 
+    # Vehiculo 
+    url(r'^vehiculos/$',login_required(views.principal_vehiculos.as_view()), name='principal_vehiculos'),
+    url(r'^vehiculos/agregar/$',login_required(views.principal_agregar_vehiculo.as_view()), name='vehiculo_create'),    
+    url(r'^vehiculos/editar/(?P<pk>\d+)$',login_required(views.principal_editar_vehiculo.as_view()), name='vehiculo_edit'),
+    url(r'^vehiculos/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_vehiculo.as_view()), name='vehiculo_delete'),
+    url(r'^reporte_vehiculos_pdf/$',login_required(views.ReporteVehiculosPDF.as_view()), name="reporte_vehiculos_pdf"),   
+
     #Marca
     url(r'^marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),
     url(r'^marcas/agregar/$',login_required(views.principal_agregar_marca.as_view()), name='marca_create'),    
