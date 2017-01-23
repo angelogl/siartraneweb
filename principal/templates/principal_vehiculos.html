@@ -21,7 +21,7 @@
                        <th>{% trans 'Socio' %}</th>
                        <th>{% trans 'Marca/Modelo' %}</th>
                        <th>{% trans 'Color' %}</th>                       
-                      <th colspan="2" align="center">{% trans 'Acciones' %}</th
+                      <th colspan="3" align="center">{% trans 'Acciones' %}</th
                     </tr>
                  </thead>
                  <tbody>
@@ -30,7 +30,7 @@
                            <td>{{ vehiculos }}</td>
                            <td>{{ vehiculos.MarcaModelo|default:'' }}</td>
                            <td>{{ vehiculos.Color|default:'' }}</td>
-                           <td><a id="update_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_edit' vehiculos.id %}" class="btn btn-primary btn-ms">Editar</a></td>
+                           <td><a id="update_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_edit' %}" class="btn btn-primary btn-ms">Editar</a></td>
                            <td><a id="delete_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_delete' vehiculos.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
                          </tr>
                          <script type="text/javascript">

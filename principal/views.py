@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.views.generic import CreateView,TemplateView,ListView,DetailView,View
 from django.db.models import Q
 
+from django.template.context import RequestContext
+
 from django_modalview.generic.base import ModalTemplateView
 from django_modalview.generic.edit import ModalFormView,ModalCreateView,ModalUpdateView,ModalDeleteView
 
@@ -20,6 +22,7 @@ from principal.forms import CauchoEdit, CauchoCreate
 from principal.forms import RinEdit, RinCreate
 from principal.forms import AceiteEdit, AceiteCreate
 from principal.forms import FiltroEdit, FiltroCreate
+from principal.forms import OrderForm, get_ordereditem_formset
 
 from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites,Filtros,Cooperativas
 from principal.models import Vehiculos
@@ -195,7 +198,7 @@ class principal_agregar_vehiculo(ModalCreateView):
      #When you call the parent method you set commit to false because you have save the object.
      return super(principal_agregar_vehiculo, self).form_valid(form, commit=False, **kwargs)
 
-class principal_editar_vehiculo(ModalUpdateView):
+class principal_editar_vehiculo2(ModalUpdateView):
    def __init__(self, *args, **kwargs):
      super(principal_editar_vehiculo, self).__init__(*args, **kwargs)
      self.title = "Actualice los datos"
@@ -208,6 +211,31 @@ class principal_editar_vehiculo(ModalUpdateView):
    def form_valid(self, form, **kwargs):
      self.response  = ModalResponse("Información actualizada", "success")
      return super(principal_editar_vehiculo, self).form_valid(form, **kwargs)
+
+def editar_vehiculo(request, form_class, template):
+    OrderedItemFormset = get_ordereditem_formset(form_class, extra=1, can_delete=True)
+    vehiculo = Vehiculos.objects.all()[0]
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=vehiculo)
+        formset = OrderedItemFormset(request.POST, instance=vehiculo)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            data = [{
+                'order': item.order,
+                'product': item.product,
+                'quantity': item.quantity
+            } for item in order.ordered_items.all()]
+            return display_data(request, data)
+    else:
+        form = OrderForm(instance=vehiculo)
+        formset = OrderedItemFormset(instance=vehiculo)
+    return render_to_response(template, {'form': form, 'formset': formset},
+        context_instance=RequestContext(request))
+
+def display_data(request, data, **kwargs):
+    return render_to_response('example/posted-data.html', dict(data=data, **kwargs),
+        context_instance=RequestContext(request))
 
 class principal_eliminar_vehiculo(ModalDeleteView):
    def __init__(self, *args, **kwargs):

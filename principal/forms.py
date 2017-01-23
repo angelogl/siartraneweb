@@ -2,7 +2,7 @@ from django import forms
 
 from principal.models import Socios, Marcas, Baterias, Cauchos, Rines, Aceites, TipoAceite, Filtros, TipoFiltro, Cooperativas
 from principal.models import Vehiculos, VehiculoBaterias
-from django.forms import ModelChoiceField
+from django.forms import ModelChoiceField, models, formsets
 
 # Cooperativa
 class PrincipalCooperativas():
@@ -401,3 +401,20 @@ class FiltroEdit(forms.ModelForm):
         super(FiltroEdit, self).__init__(*args, **kwargs) # Call to ModelForm constructor
         self.fields['tipo'].widget.attrs['style'] = 'width:370px;'
         self.fields['descripcion'].widget.attrs['style'] = 'width:370px;'				
+
+############################
+## Inline Formset Example ##
+############################
+
+class OrderForm(models.ModelForm):
+    class Meta:
+        model = Vehiculos
+        fields = '__all__'
+
+class OrderedItemForm(models.ModelForm):
+    class Meta:
+        model = VehiculoBaterias
+        fields = '__all__'
+
+def get_ordereditem_formset(form, formset=models.BaseInlineFormSet, **kwargs):
+    return models.inlineformset_factory(Vehiculos, VehiculoBaterias, form, formset, **kwargs)
