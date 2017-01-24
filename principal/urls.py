@@ -36,8 +36,9 @@ urlpatterns = [
     #url(r'^inline-formset/$', views.editar_vehiculo,
     #   {'form_class': OrderedItemForm, 'template': 'inline-formset.html'}, name='vehiculo_edit1'),     
     #url(r'^vehiculos/editar/(?P<pk>\d+)$',login_required(views.principal_editar_vehiculo.as_view()), name='vehiculo_edit'),       
-    url(r'^vehiculos/editar/(?P<pk>\d+)$', views.editar_vehiculo,
-       {'form_class': OrderedItemForm, 'template': 'principal_vehiculos_detalle.html'}, name='vehiculo_edit'),     
+    #url(r'^vehiculos/editar/(?P<pk>\d+)$', views.editar_vehiculo,
+    #   {'form_class': OrderedItemForm, 'template': 'principal_vehiculos_detalle.html'}, name='vehiculo_edit'),     
+    url(r'^vehiculos/editar/(?P<pk>\d+)$',login_required(views.principal_vehiculos_bateria.as_view()), name='vehiculo_edit'),
 
     #Marca
     url(r'^marcas/$',login_required(views.principal_marcas.as_view()), name='principal_marcas'),

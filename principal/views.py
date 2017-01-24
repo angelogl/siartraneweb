@@ -185,6 +185,18 @@ class principal_vehiculos(TemplateView):
            results = Vehiculos.objects.all()
         return results   
 
+class principal_vehiculos_bateria(TemplateView):
+    template_name = "principal_vehiculos_bateria.html"
+    title = "My beautiful list of books"
+
+    def vehiculos_bateria(self):
+        query = self.request.GET.get('pk', '')
+        if query:
+           results = get_object_or_404(Vehiculos, pk=query)
+        else:
+           results = Vehiculos.objects.filter()
+        return results  
+
 class principal_agregar_vehiculo(ModalCreateView):
 
    def __init__(self, *args, **kwargs):

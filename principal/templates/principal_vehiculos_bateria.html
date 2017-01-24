@@ -1,0 +1,67 @@
+{% extends "site_base.html" %}
+{% load staticfiles i18n %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
+    <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" /> 
+    <script src='/site_media/static/js/site-5e73bbeeb0.js'></script>   
+{% endblock %}
+
+{% block body_base %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            {% include "_side_menu.html" %}
+        </div>
+        <div class="col-sm-9 col-md-9">
+          {% include "_vehiculo_menu.html" %}
+           <table class="table table-hover" id="table_vehiculos">
+                 <thead>
+                    <tr>
+                       <th>{% trans 'Batería' %}</th>
+                       <th>{% trans 'Cantidad' %}</th>
+                       <th colspan="2" align="center">{% trans 'Acciones' %}</th
+                    </tr>
+                 </thead>
+                 <tbody>
+                    {% for vehiculos in view.vehiculos_bateria %}
+                         <tr>
+                           <td>{{ vehiculos.socio }}</td>
+                           <td colspan="3"></td>
+                         </tr>
+                         {% for baterias in vehiculos.vehiculobaterias_set.all %}
+                            <tr>
+                              <td>{{ baterias.baterias }}</td>
+                              <td>iiiii</td>                              
+                              <td colspan="2"></td>
+                            </tr>
+                         {% endfor %}                         
+                    {% endfor %}
+                 </tbody>
+              </table>
+              <hr>
+         <div class="row">
+            <div class="col-lg-12">
+                 <a id="create_vehiculo" href="{% url 'vehiculo_create' %}" class="btn btn-success">Agregar Vehiculo</a>         
+            </div>
+         </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+  <script type="text/javascript" src="{% static 'django_modalview/js/django_modal_view.js' %}"></script>
+  <script type="text/javascript" src="{% static 'django_modalview/js/jquery.form.js' %}"></script>    
+
+  <script type="text/javascript">
+     $(function(){
+       $('#create_vehiculo').DjangoModalRunner({
+          on_hide_modal_after_submit: function(){
+            location.reload();
+          },
+       });
+     });
+  </script>
+{% endblock %}
