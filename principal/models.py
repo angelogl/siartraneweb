@@ -87,7 +87,7 @@ class Baterias(models.Model):
 class VehiculoBaterias(models.Model):
     vehiculos = models.ForeignKey(Vehiculos, related_name='vehiculo_items_baterias')
     baterias = models.ForeignKey(Baterias, related_name='vehiculo_baterias')
-    cantidad = models.PositiveSmallIntegerField
+    cantidad = models.PositiveSmallIntegerField()
 
     class Meta:
         verbose_name_plural = "VehiculosBateriass"

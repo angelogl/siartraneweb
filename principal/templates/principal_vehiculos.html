@@ -30,17 +30,10 @@
                            <td>{{ vehiculos }}</td>
                            <td>{{ vehiculos.MarcaModelo|default:'' }}</td>
                            <td>{{ vehiculos.Color|default:'' }}</td>
-                           <td><a id="update_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_edit' %}" class="btn btn-primary btn-ms">Editar</a></td>
+                           <td><a id="update_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_edit' vehiculos.id %}" class="btn btn-primary btn-ms">Editar</a></td>
                            <td><a id="delete_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_delete' vehiculos.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
                          </tr>
                          <script type="text/javascript">
-                            $(function(){
-                                $('#update_vehiculo{{ vehiculos.id }}').DjangoModalRunner({
-                                   on_hide_modal_after_submit: function(){
-                                     location.reload();
-                                   },
-                               });
-                            });
                             $(function(){
                                 $('#delete_vehiculo{{ vehiculos.id }}').DjangoModalRunner({
                                    on_hide_modal_after_submit: function(){

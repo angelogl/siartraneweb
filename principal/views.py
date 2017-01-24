@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render_to_response
 from django.http import HttpResponseBadRequest, HttpResponse, HttpRequest
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView,TemplateView,ListView,DetailView,View
+from django.views.generic import CreateView,TemplateView,ListView,DetailView,View,UpdateView
 from django.db.models import Q
 
 from django.template.context import RequestContext
@@ -22,7 +22,7 @@ from principal.forms import CauchoEdit, CauchoCreate
 from principal.forms import RinEdit, RinCreate
 from principal.forms import AceiteEdit, AceiteCreate
 from principal.forms import FiltroEdit, FiltroCreate
-from principal.forms import OrderForm, get_ordereditem_formset
+from principal.forms import OrderForm, get_ordereditem_formset, OrderedItemForm
 
 from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites,Filtros,Cooperativas
 from principal.models import Vehiculos
@@ -200,21 +200,46 @@ class principal_agregar_vehiculo(ModalCreateView):
 
 class principal_editar_vehiculo2(ModalUpdateView):
    def __init__(self, *args, **kwargs):
-     super(principal_editar_vehiculo, self).__init__(*args, **kwargs)
-     self.title = "Actualice los datos"
+     super(principal_editar_vehiculo2, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datoSSs"
      self.form_class = VehiculoEdit     
+
+   def dispatch(self, request, *args, **kwargs):
+     self.object = Vehiculos.objects.get(pk=kwargs.get('pk'))
+     return super(principal_editar_vehiculo2, self).dispatch(request, *args, **kwargs)
+
+   def form_valid(self, form, **kwargs):
+     self.response  = ModalResponse("Información actualizada", "success")
+     return super(principal_editar_vehiculo2, self).form_valid(form, **kwargs)
+
+class principal_editar_vehiculo(UpdateView):
+
+   def __init__(self, *args, **kwargs):
+     super(principal_editar_vehiculo, self).__init__(*args, **kwargs)
+     self.title = "Actualice los datoSSSs"
+     self.form_class = OrderedItemForm
+     self.template_name = 'inline-formset.html'
+     self.Model = Vehiculos
+
+   def get(self, request, *args, **kwargs):
+     self.object = Vehiculos.objects.get(pk=kwargs.get('pk'))
+     #form_class = self.get_form_class()
+     #form = self.get_form(form_class)
+     context = self.get_context_data(object=self.object, form='inline-formset.html')
+     return self.render_to_response(context)
 
    def dispatch(self, request, *args, **kwargs):
      self.object = Vehiculos.objects.get(pk=kwargs.get('pk'))
      return super(principal_editar_vehiculo, self).dispatch(request, *args, **kwargs)
 
    def form_valid(self, form, **kwargs):
-     self.response  = ModalResponse("Información actualizada", "success")
+     #self.response  = ModalResponse("Información actualizada", "success")
      return super(principal_editar_vehiculo, self).form_valid(form, **kwargs)
 
-def editar_vehiculo(request, form_class, template):
+def editar_vehiculo(request, form_class, template, pk, **kwargs):
     OrderedItemFormset = get_ordereditem_formset(form_class, extra=1, can_delete=True)
-    vehiculo = Vehiculos.objects.all()[0]
+    #vehiculo = Vehiculos.objects.get(pk=kwargs.get('pk'))
+    vehiculo = get_object_or_404(Vehiculos, pk=pk)
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=vehiculo)
         formset = OrderedItemFormset(request.POST, instance=vehiculo)
