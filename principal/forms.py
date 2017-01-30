@@ -4,6 +4,13 @@ from principal.models import Socios, Marcas, Baterias, Cauchos, Rines, Aceites, 
 from principal.models import Vehiculos, VehiculoBaterias
 from django.forms import ModelChoiceField, models, formsets
 
+from .models import Receta, Ingrediente, Instruccion
+
+class RecetaForm(forms.ModelForm):
+    class Meta:
+        model = Receta
+        fields = '__all__' 
+
 # Cooperativa
 class PrincipalCooperativas():
     rif = forms.CharField(label='Rif')

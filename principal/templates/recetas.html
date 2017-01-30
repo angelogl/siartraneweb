@@ -1,0 +1,15 @@
+{% extends 'site_base.html' %}
+
+{% block body_base %}
+<h1>Recetas</h1>
+
+<ol>
+    {% for receta in recetas %}
+        <li>
+            <a href="{{ receta.get_absolute_url }}">{{ receta.titulo }}</a>
+        </li>
+    {% endfor %}
+</ol>
+
+<a href="{% url 'registrar' %}">Registrar receta</a>
+{% endblock body_base %}

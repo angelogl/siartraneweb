@@ -36,6 +36,45 @@ from reportlab.lib import colors
 from django.conf import settings
 
 # Create your views here.
+from django.template import RequestContext as ctx
+from django.forms.models import inlineformset_factory
+
+from .models import Receta, Ingrediente, Instruccion
+from .forms import RecetaForm
+
+def recetas(request):
+    recetas = Receta.objects.all()
+
+    return render_to_response('recetas.html', locals(),
+        context_instance=ctx(request))
+
+def registro_edicion(request, receta_id=None):
+    if receta_id:
+        receta = Receta.objects.get(pk=receta_id)
+    else:
+        receta = Receta()
+
+    IngredienteFormSet = inlineformset_factory(Receta, Ingrediente, extra=0, can_delete=True, form=RecetaForm)
+    InstruccionFormSet = inlineformset_factory(Receta, Instruccion, extra=0, can_delete=True, form=RecetaForm)
+
+    if request.method == 'POST':
+        form = RecetaForm(request.POST, instance=receta)
+        ingredienteFormset = IngredienteFormSet(request.POST, instance=receta)
+        instruccionFormset = InstruccionFormSet(request.POST, instance=receta)
+
+        if form.is_valid() and ingredienteFormset.is_valid() and instruccionFormset.is_valid():
+            form.save()
+            ingredienteFormset.save()
+            instruccionFormset.save()
+            return render_to_response('lista')
+    else:
+        form = RecetaForm(instance=receta)
+        ingredienteFormset = IngredienteFormSet(instance=receta)
+        instruccionFormset = InstruccionFormSet(instance=receta)
+
+    return render_to_response('registro-edicion.html', locals(),
+        context_instance=ctx(request))
+
 class ExampleFormViewMixin(object):
     def get_context_data(self, **kwargs):
         context_data = super(ExampleFormViewMixin, self).get_context_data(**kwargs)
@@ -190,12 +229,9 @@ class principal_vehiculos_bateria(TemplateView):
     title = "My beautiful list of books"
 
     def vehiculos_bateria(self):
-        query = self.request.GET.get('pk', '')
-        if query:
-           results = get_object_or_404(Vehiculos, pk=query)
-        else:
-           results = Vehiculos.objects.filter()
-        return results  
+        vehiculos = Vehiculos.objects.filter()
+        context = {'vehiculos': vehiculos}
+        return render_to_response('principal_vehiculos_bateria', context, context_instance = RequestContext(request))
 
 class principal_agregar_vehiculo(ModalCreateView):
 

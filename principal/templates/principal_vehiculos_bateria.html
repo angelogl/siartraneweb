@@ -14,7 +14,7 @@
             {% include "_side_menu.html" %}
         </div>
         <div class="col-sm-9 col-md-9">
-          {% include "_vehiculo_menu.html" %}
+           {% include "_vehiculo_menu.html" %}
            <table class="table table-hover" id="table_vehiculos">
                  <thead>
                     <tr>
@@ -24,12 +24,13 @@
                     </tr>
                  </thead>
                  <tbody>
-                    {% for vehiculos in view.vehiculos_bateria %}
+                    {% for vehiculo in vehiculos %}
                          <tr>
-                           <td>{{ vehiculos.socio }}</td>
-                           <td colspan="3"></td>
+                           <td>{{ vehiculo.socio }}</td>
+                           <td></td>                           
+                           <td colspan="2"></td>
                          </tr>
-                         {% for baterias in vehiculos.vehiculobaterias_set.all %}
+                         {% for baterias in vehiculo.vehiculobaterias_set.all %}
                             <tr>
                               <td>{{ baterias.baterias }}</td>
                               <td>iiiii</td>                              

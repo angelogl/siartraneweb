@@ -13,6 +13,10 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^principal/$',login_required(views.principal.as_view()), name='principal'),  
 
+    url(r'^recetas/lista/$', 'principal.views.recetas', name='lista'),
+    url(r'^recetas/registrar/$', 'principal.views.registro_edicion', name='registrar'),
+    url(r'^recetas/(?P<receta_id>\d+)/$', 'principal.views.registro_edicion', name='editar'), 
+
     # Cooperativa 
     url(r'^cooperativas/$',login_required(views.principal_cooperativas.as_view()), name='principal_coop'),
     url(r'^cooperativas/agregar/$',login_required(views.principal_agregar_cooperativa.as_view()), name='cooperativa_create'),    
