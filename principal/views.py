@@ -25,7 +25,7 @@ from principal.forms import FiltroEdit, FiltroCreate
 from principal.forms import OrderForm, get_ordereditem_formset, OrderedItemForm
 
 from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites,Filtros,Cooperativas
-from principal.models import Vehiculos
+from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -39,38 +39,38 @@ from django.conf import settings
 from django.template import RequestContext as ctx
 from django.forms.models import inlineformset_factory
 
-from .models import Receta, Ingrediente, Instruccion
-from .forms import RecetaForm
+#from .models import Vehiculo, Bateria, Caucho
+from .forms import VehiculoForm
 
-def recetas(request):
-    recetas = Receta.objects.all()
+def vehiculos(request):
+    vehiculos = Vehiculos.objects.all()
 
-    return render_to_response('recetas.html', locals(),
+    return render_to_response('vehiculos.html', locals(),
         context_instance=ctx(request))
 
-def registro_edicion(request, receta_id=None):
-    if receta_id:
-        receta = Receta.objects.get(pk=receta_id)
+def registro_edicion(request, vehiculo_id=None):
+    if vehiculo_id:
+        vehiculo = Vehiculos.objects.get(pk=vehiculo_id)
     else:
-        receta = Receta()
+        vehiculo = Vehiculos()
 
-    IngredienteFormSet = inlineformset_factory(Receta, Ingrediente, extra=0, can_delete=True, form=RecetaForm)
-    InstruccionFormSet = inlineformset_factory(Receta, Instruccion, extra=0, can_delete=True, form=RecetaForm)
+    BateriaFormSet = inlineformset_factory(Vehiculos, VehiculoBaterias, extra=1, can_delete=True, form=VehiculoForm)
+    CauchoFormSet = inlineformset_factory(Vehiculos, VehiculoCauchos, extra=1, can_delete=True, form=VehiculoForm)
 
     if request.method == 'POST':
-        form = RecetaForm(request.POST, instance=receta)
-        ingredienteFormset = IngredienteFormSet(request.POST, instance=receta)
-        instruccionFormset = InstruccionFormSet(request.POST, instance=receta)
+        form = VehiculoForm(request.POST, instance=vehiculo)
+        bateriaFormset = BateriaFormSet(request.POST, instance=vehiculo)
+        cauchoFormset = CauchoFormSet(request.POST, instance=vehiculo)
 
-        if form.is_valid() and ingredienteFormset.is_valid() and instruccionFormset.is_valid():
+        if form.is_valid() and bateriaFormset.is_valid() and cauchoFormset.is_valid():
             form.save()
-            ingredienteFormset.save()
-            instruccionFormset.save()
-            return render_to_response('lista')
+            bateriaFormset.save()
+            cauchoFormset.save()
+            return render_to_response('vehiculos.html')
     else:
-        form = RecetaForm(instance=receta)
-        ingredienteFormset = IngredienteFormSet(instance=receta)
-        instruccionFormset = InstruccionFormSet(instance=receta)
+        form = VehiculoForm(instance=vehiculo)
+        bateriaFormset = BateriaFormSet(instance=vehiculo)
+        cauchoFormset = CauchoFormSet(instance=vehiculo)
 
     return render_to_response('registro-edicion.html', locals(),
         context_instance=ctx(request))

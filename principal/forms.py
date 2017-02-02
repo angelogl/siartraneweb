@@ -1,14 +1,14 @@
 from django import forms
 
 from principal.models import Socios, Marcas, Baterias, Cauchos, Rines, Aceites, TipoAceite, Filtros, TipoFiltro, Cooperativas
-from principal.models import Vehiculos, VehiculoBaterias
+from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos
 from django.forms import ModelChoiceField, models, formsets
 
 from .models import Receta, Ingrediente, Instruccion
 
-class RecetaForm(forms.ModelForm):
+class VehiculoForm(forms.ModelForm):
     class Meta:
-        model = Receta
+        model = Vehiculos
         fields = '__all__' 
 
 # Cooperativa

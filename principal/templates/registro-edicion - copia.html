@@ -1,16 +1,15 @@
 {% extends 'site_base.html' %}
 
 {% block extra_head_base %}
-    <script src='/site_media/static/js/jquery-1.3.2.min.js'></script>   
-    <script src='/site_media/static/js/jquery.formset.js'></script>       
+    <script src='/site_media/static/js/site-5e73bbeeb0.js'></script>   
 {% endblock %}
 
 {% block body_base %}
 <form method="post" action="#">
     {% csrf_token %}
 
-    {{ bateriaFormset.management_form }}
-    {{ cauchoFormset.management_form }}
+    {{ ingredienteFormset.management_form }}
+    {{ instruccionFormset.management_form }}
 
     <fieldset class="form ">
         {% for field in form %}
@@ -24,9 +23,9 @@
     </fieldset>
 
     <fieldset>
-        <legend>Baterias</legend>
-        <ul id='formset-baterias'>
-            {% for form in bateriaFormset %}
+        <legend>Ingredientes</legend>
+        <ul id='formset-ingredientes'>
+            {% for form in ingredienteFormset %}
                 {{ form.id }}
                 <li>
                     {{ form.as_ul }}
@@ -34,13 +33,13 @@
             {% endfor %}
         </ul>
 
-        <button id='btnBateria'>Añadir Bateria</button>
+        <button id='btnIngrediente'>Añadir Ingrediente</button>
     </fieldset>
 
     <fieldset>
-        <legend>Cauchos</legend>
-        <ul id='formset-cauchos'>
-            {% for form in cauchoFormset %}
+        <legend>Instrucciones</legend>
+        <ul id='formset-instrucciones'>
+            {% for form in instruccionFormset %}
                 {{ form.id }}
                 <li>
                     {{ form.as_ul }}
@@ -48,18 +47,18 @@
             {% endfor %}
         </ul>
 
-        <button id='btnCaucho'>Añadir Cauchos</button>
+        <button id='btnInstruccion'>Añadir Instrucción</button>
     </fieldset>
 
     <button>Enviar</button>
 </form>
 
-<script type='template/bateria'>
-    {{ bateriaFormset.empty_form.as_ul }}
+<script type='template/ingrediente'>
+    {{ ingredienteFormset.empty_form.as_ul }}
 </script>
 
-<script type='template/caucho'>
-    {{ cauchoFormset.empty_form.as_ul }}
+<script type='template/instruccion'>
+    {{ instruccionFormset.empty_form.as_ul }}
 </script>
 
 <script>
@@ -72,26 +71,26 @@ $(function(){
           return text;
     }
 
-    var $totalBaterias = $('#id_bateria_set-TOTAL_FORMS');
+    var $totalIngredientes = $('#id_ingrediente_set-TOTAL_FORMS');
 
-    $('#btnBateria').click(function(event) {
+    $('#btnIngrediente').click(function(event) {
         event.preventDefault();
-        var total = parseInt($totalBaterias.val(), 10);
-        var clon = $('script[type="template/bateria"]').html();
+        var total = parseInt($totalIngredientes.val(), 10);
+        var clon = $('script[type="template/ingrediente"]').html();
         clon_html = replaceAll(clon, '__prefix__', (total).toString());
-        $('#formset-baterias').append(clon_html);
-        $totalBaterias.val(total +  1);
+        $('#formset-ingredientes').append(clon_html);
+        $totalIngredientes.val(total +  1);
     });
 
-    var $totalCauchos = $('#id_caucho_set-TOTAL_FORMS');
+    var $totalInstrucciones = $('#id_instruccion_set-TOTAL_FORMS');
 
-    $('#btnCaucho').click(function(event) {
+    $('#btnInstruccion').click(function(event) {
         event.preventDefault();
-        var total = parseInt($totalCauchos.val(), 10);
-        var clon = $('script[type="template/caucho"]').html();
+        var total = parseInt($totalInstrucciones.val(), 10);
+        var clon = $('script[type="template/instruccion"]').html();
         clon_html = replaceAll(clon, '__prefix__', (total).toString());
-        $('#formset-cauchos').append(clon_html);
-        $totalCauchos.val(total +  1);
+        $('#formset-instrucciones').append(clon_html);
+        $totalInstrucciones.val(total +  1);
     });
 })
 </script>

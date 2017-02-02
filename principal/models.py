@@ -69,13 +69,13 @@ class Vehiculos(models.Model):
     CapacidadCarga = models.CharField(max_length=10)    
 
     class Meta:
-        verbose_name_plural = "Vehiculoss"
+        verbose_name_plural = "Vehiculos"
 
     def __str__(self):
         return u'%s' % (self.placa)
 
-    #def get_absolute_url(self):
-    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
+    def get_absolute_url(self):
+        return reverse('editar', kwargs={'vehiculo_id': self.id})   
 
 class Baterias(models.Model):
     descripcion = models.CharField(max_length=50)
@@ -86,18 +86,9 @@ class Baterias(models.Model):
         return u'%s' % (self.descripcion)
 
 class VehiculoBaterias(models.Model):
-    vehiculos = models.ForeignKey(Vehiculos, related_name='vehiculo_items_baterias')
-    baterias = models.ForeignKey(Baterias, related_name='vehiculo_baterias')
+    vehiculos = models.ForeignKey(Vehiculos)
+    baterias = models.ForeignKey(Baterias)
     cantidad = models.PositiveSmallIntegerField()
-
-    class Meta:
-        verbose_name_plural = "VehiculosBateriass"
-
-    def __str__(self):
-        return u'%s' % (self.baterias)
-
-    #def get_absolute_url(self):
-    #    return reverse('sector_edit',kwargs = {'pk':self.pk })
 
 class Cauchos(models.Model):
     descripcion = models.CharField(max_length=50)
@@ -106,6 +97,11 @@ class Cauchos(models.Model):
 
     def __str__(self):
         return u'%s' % (self.descripcion)
+
+class VehiculoCauchos(models.Model):
+    vehiculos = models.ForeignKey(Vehiculos)
+    cauchos = models.ForeignKey(Cauchos)
+    cantidad = models.PositiveSmallIntegerField()
 
 class Rines(models.Model):
     descripcion = models.CharField(max_length=50)
