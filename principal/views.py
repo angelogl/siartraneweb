@@ -72,7 +72,7 @@ def registro_edicion(request, vehiculo_id=None):
         bateriaFormset = BateriaFormSet(instance=vehiculo)
         cauchoFormset = CauchoFormSet(instance=vehiculo)
 
-    return render_to_response('registro-edicion.html', locals(),
+    return render_to_response('principal_vehiculos_editar.html', locals(),
         context_instance=ctx(request))
 
 class ExampleFormViewMixin(object):

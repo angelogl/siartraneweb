@@ -1,0 +1,114 @@
+{% extends "site_base.html" %}
+{% load staticfiles i18n %}
+
+{% block extra_head_base %}
+    <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
+    <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" /> 
+    <script src='/site_media/static/js/site-5e73bbeeb0.js'></script>   
+{% endblock %}
+
+{% block body_base %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            {% include "_side_menu.html" %}
+        </div>
+        <div class="col-sm-9 col-md-9">
+        {% include "_vehiculo_menu.html" %}
+<form method="post" action="#">
+    {% csrf_token %}
+
+    {{ bateriaFormset.management_form }}
+    {{ cauchoFormset.management_form }}
+
+    <fieldset class="form ">
+        {% for field in form %}
+            <div class="form-row">
+                <div class="field-box">
+                    {{ field.errors }}
+                    {{ field.label_tag }}: {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+    </fieldset>
+
+    <fieldset>
+        <legend>Baterias</legend>
+        <ul id='formset-baterias'>
+            {% for form in bateriaFormset %}
+                {{ form.id }}
+                <li>
+                    {{ form.as_ul }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button id='btnBateria'>Añadir Bateria</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Cauchos</legend>
+        <ul id='formset-cauchos'>
+            {% for form in cauchoFormset %}
+                {{ form.id }}
+                <li>
+                    {{ form.as_ul }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <button id='btnCaucho'>Añadir Cauchos</button>
+    </fieldset>
+
+    <button>Enviar</button>
+</form>
+          
+          <hr>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type='template/bateria'>
+    {{ bateriaFormset.empty_form.as_ul }}
+</script>
+
+<script type='template/caucho'>
+    {{ cauchoFormset.empty_form.as_ul }}
+</script>
+
+<script>
+$(function(){
+
+    // Reemplaza todas las coincidencias en vez de solo la primera
+    function replaceAll(text, busca, reemplaza){
+          while (text.toString().indexOf(busca) != -1)
+            text = text.toString().replace(busca, reemplaza);
+          return text;
+    }
+
+    var $totalBaterias = $('#id_bateria_set-TOTAL_FORMS');
+
+    $('#btnBateria').click(function(event) {
+        event.preventDefault();
+        var total = parseInt($totalBaterias.val(), 10);
+        var clon = $('script[type="template/bateria"]').html();
+        clon_html = replaceAll(clon, '__prefix__', (total).toString());
+        $('#formset-baterias').append(clon_html);
+        $totalBaterias.val(total +  1);
+    });
+
+    var $totalCauchos = $('#id_caucho_set-TOTAL_FORMS');
+
+    $('#btnCaucho').click(function(event) {
+        event.preventDefault();
+        var total = parseInt($totalCauchos.val(), 10);
+        var clon = $('script[type="template/caucho"]').html();
+        clon_html = replaceAll(clon, '__prefix__', (total).toString());
+        $('#formset-cauchos').append(clon_html);
+        $totalCauchos.val(total +  1);
+    });
+})
+</script>
+{% endblock %}

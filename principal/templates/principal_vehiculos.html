@@ -27,7 +27,7 @@
                  <tbody>
                     {% for vehiculos in view.vehiculos %}
                          <tr>
-                           <td>{{ vehiculos }}</td>
+                           <td>{{ vehiculos.socio }}</td>
                            <td>{{ vehiculos.MarcaModelo|default:'' }}</td>
                            <td>{{ vehiculos.Color|default:'' }}</td>
                            <td><a id="update_vehiculo{{ vehiculos.id }}" href="{% url 'vehiculo_edit' vehiculos.id %}" class="btn btn-primary btn-ms">Editar</a></td>
