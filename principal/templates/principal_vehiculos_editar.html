@@ -1,6 +1,8 @@
 {% extends "site_base.html" %}
 {% load staticfiles i18n %}
 
+{% load bootstrap %} 
+
 {% block extra_head_base %}
     <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
     <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" /> 
@@ -15,56 +17,51 @@
         </div>
         <div class="col-sm-9 col-md-9">
         {% include "_vehiculo_menu.html" %}
-<form method="post" action="#">
-    {% csrf_token %}
+       
+       <form method="post" action="#">
+          {% csrf_token %}
 
-    {{ bateriaFormset.management_form }}
-    {{ cauchoFormset.management_form }}
+          {{ bateriaFormset.management_form }}
+          {{ cauchoFormset.management_form }}
 
-    <fieldset class="form ">
-        {% for field in form %}
-            <div class="form-row">
-                <div class="field-box">
-                    {{ field.errors }}
-                    {{ field.label_tag }}: {{ field }}
-                </div>
-            </div>
-        {% endfor %}
-    </fieldset>
+          <fieldset class="form ">
+              {{ form|bootstrap_horizontal:'col-lg-4' }}
+          </fieldset>
+         
+          <div class="row">
+             <div class="col-sm-4 col-md-4">
+              <fieldset>
+                <legend>Baterias</legend>
+                   <ul id='formset-baterias'>
+                     {% for form in bateriaFormset %}
+                       {{ form.id }}
+                       {{ form|bootstrap_horizontal:'col-lg-4' }}
+                     {% endfor %}
+                  </ul>
 
-    <fieldset>
-        <legend>Baterias</legend>
-        <ul id='formset-baterias'>
-            {% for form in bateriaFormset %}
-                {{ form.id }}
-                <li>
-                    {{ form.as_ul }}
-                </li>
-            {% endfor %}
-        </ul>
+               <button id='btnBateria'>Añadir Bateria</button>
+              </fieldset>
+             </div>
+ 
+             <div class="col-sm-4 col-md-4">             
+              <fieldset>
+                <legend>Cauchos</legend>
+                   <ul id='formset-cauchos'>
+                     {% for form in cauchoFormset %}
+                       {{ form.id }}
+                       {{ form|bootstrap_horizontal:'col-lg-4' }}
+                     {% endfor %}
+                   </ul>
 
-        <button id='btnBateria'>Añadir Bateria</button>
-    </fieldset>
-
-    <fieldset>
-        <legend>Cauchos</legend>
-        <ul id='formset-cauchos'>
-            {% for form in cauchoFormset %}
-                {{ form.id }}
-                <li>
-                    {{ form.as_ul }}
-                </li>
-            {% endfor %}
-        </ul>
-
-        <button id='btnCaucho'>Añadir Cauchos</button>
-    </fieldset>
-
-    <button>Enviar</button>
-</form>
+               <button id='btnCaucho'>Añadir Cauchos</button>
+             </fieldset>
+             </div>
+          </div>             
+          <button>Enviar</button>
+       </form>
           
-          <hr>
-        </div>
+       <hr>
+      </div>
     </div>
 </div>
 {% endblock %}

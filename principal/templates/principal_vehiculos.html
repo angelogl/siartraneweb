@@ -61,13 +61,4 @@
   <script type="text/javascript" src="{% static 'django_modalview/js/django_modal_view.js' %}"></script>
   <script type="text/javascript" src="{% static 'django_modalview/js/jquery.form.js' %}"></script>    
 
-  <script type="text/javascript">
-     $(function(){
-       $('#create_vehiculo').DjangoModalRunner({
-          on_hide_modal_after_submit: function(){
-            location.reload();
-          },
-       });
-     });
-  </script>
 {% endblock %}

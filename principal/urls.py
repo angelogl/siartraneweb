@@ -33,7 +33,8 @@ urlpatterns = [
 
     # Vehiculo 
     url(r'^vehiculos/$',login_required(views.principal_vehiculos.as_view()), name='principal_vehiculos'),
-    url(r'^vehiculos/agregar/$',login_required(views.principal_agregar_vehiculo.as_view()), name='vehiculo_create'),    
+    url(r'^vehiculos/agregar/$',views.registro_edicion, name='vehiculo_create'),    
+    #url(r'^vehiculos/agregar/$',login_required(views.principal_agregar_vehiculo.as_view()), name='vehiculo_create'),        
     #url(r'^vehiculos/editar/(?P<pk>\d+)$',login_required(views.principal_editar_vehiculo2.as_view()), name='vehiculo_edit2'),
     url(r'^vehiculos/eliminar/(?P<pk>\d+)$',login_required(views.principal_eliminar_vehiculo.as_view()), name='vehiculo_delete'),
     url(r'^reporte_vehiculos_pdf/$',login_required(views.ReporteVehiculosPDF.as_view()), name="reporte_vehiculos_pdf"),  
