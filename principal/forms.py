@@ -165,12 +165,11 @@ class VehiculoCreate(forms.ModelForm):
     placa = forms.CharField(label='Placa',max_length=10)
     m3 = forms.CharField(label='M3')
     MarcaModelo = ModelChoiceField(queryset=Marcas.objects.all(), required=True, empty_label=(u'Marca/Modelo'), label='Marca/Modelo')
-    GrasaChasis = forms.CharField(label='Grasa Chasis')
-    SerialCarroceria = forms.CharField(label='Serial Carroceria')
+    SerialCarroceria = forms.CharField(label='Serial Carrocería')
     Color = forms.CharField(label='Color')
     Ano = forms.CharField(label='Año')
     CapacidadCarga = forms.CharField(label='Capacidad Carga')
-    
+    GrasaChasis = forms.CharField(label='Grasa Chasis')    
     class Meta:
         model = Vehiculos
         fields = '__all__'
@@ -181,11 +180,11 @@ class VehiculoCreate(forms.ModelForm):
         self.fields['placa'].widget.attrs['style'] = 'width:150px;'
         self.fields['m3'].widget.attrs['style'] = 'width:150px;'		
         self.fields['MarcaModelo'].widget.attrs['style'] = 'width:370px;'	
-        self.fields['GrasaChasis'].widget.attrs['style'] = 'width:150px;'		
         self.fields['SerialCarroceria'].widget.attrs['style'] = 'width:150px;'	
         self.fields['Color'].widget.attrs['style'] = 'width:150px;'		
         self.fields['Ano'].widget.attrs['style'] = 'width:150px;'	
         self.fields['CapacidadCarga'].widget.attrs['style'] = 'width:150px;'		
+        self.fields['GrasaChasis'].widget.attrs['style'] = 'width:150px;'		
 
 class VehiculoEdit(forms.ModelForm):
     socio = ModelChoiceField(queryset=Socios.objects.all(), required=True, empty_label=(u'Socio'), label='Socio')    

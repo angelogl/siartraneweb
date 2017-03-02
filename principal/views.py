@@ -58,7 +58,7 @@ def registro_edicion(request, vehiculo_id=None):
     CauchoFormSet = inlineformset_factory(Vehiculos, VehiculoCauchos, extra=1, can_delete=True, form=VehiculoForm)
 
     if request.method == 'POST':
-        form = VehiculoForm(request.POST, instance=vehiculo)
+        form = VehiculoCreate(request.POST, instance=vehiculo)
         bateriaFormset = BateriaFormSet(request.POST, instance=vehiculo)
         cauchoFormset = CauchoFormSet(request.POST, instance=vehiculo)
 
@@ -68,7 +68,7 @@ def registro_edicion(request, vehiculo_id=None):
             cauchoFormset.save()
             return render_to_response('vehiculos.html')
     else:
-        form = VehiculoForm(instance=vehiculo)
+        form = VehiculoCreate(instance=vehiculo)
         bateriaFormset = BateriaFormSet(instance=vehiculo)
         cauchoFormset = CauchoFormSet(instance=vehiculo)
 
