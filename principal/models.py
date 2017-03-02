@@ -111,6 +111,11 @@ class Rines(models.Model):
     def __str__(self):
         return u'%s' % (self.descripcion)
 
+class VehiculoRines(models.Model):
+    vehiculos = models.ForeignKey(Vehiculos)
+    rines = models.ForeignKey(Rines)
+    cantidad = models.PositiveSmallIntegerField()
+
 class TipoAceite(models.Model):
     descripcion = models.CharField(max_length=50)
     class Meta:
