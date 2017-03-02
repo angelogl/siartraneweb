@@ -172,7 +172,7 @@ class VehiculoCreate(forms.ModelForm):
     GrasaChasis = forms.CharField(label='Grasa Chasis')    
     class Meta:
         model = Vehiculos
-        fields = '__all__'
+        fields = ['socio','placa','m3','MarcaModelo','SerialCarroceria','Color','Ano','CapacidadCarga','GrasaChasis']
     
     def __init__(self, *args, **kwargs):
         super(VehiculoCreate, self).__init__(*args, **kwargs) # Call to ModelForm constructor
