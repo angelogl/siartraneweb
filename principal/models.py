@@ -133,6 +133,11 @@ class Aceites(models.Model):
     def __str__(self):
         return u'%s-%s' % (self.tipo,self.descripcion)
 
+class VehiculoAceites(models.Model):
+    vehiculos = models.ForeignKey(Vehiculos)
+    aceites = models.ForeignKey(Aceites)
+    cantidad = models.PositiveSmallIntegerField()
+
 class TipoFiltro(models.Model):
     descripcion = models.CharField(max_length=50)
     class Meta:
@@ -149,6 +154,11 @@ class Filtros(models.Model):
 
     def __str__(self):
         return u'%s-%s' % (self.tipo,self.descripcion)
+
+class VehiculoFiltros(models.Model):
+    vehiculos = models.ForeignKey(Vehiculos)
+    filtros = models.ForeignKey(Filtros)
+    cantidad = models.PositiveSmallIntegerField()
 
 class Receta(models.Model):
     titulo = models.CharField(max_length=255)

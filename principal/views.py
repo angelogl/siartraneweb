@@ -25,7 +25,7 @@ from principal.forms import FiltroEdit, FiltroCreate
 from principal.forms import OrderForm, get_ordereditem_formset, OrderedItemForm
 
 from principal.models import Socios,Marcas,Baterias,Cauchos,Rines,Aceites,Filtros,Cooperativas
-from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos, VehiculoRines
+from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos, VehiculoRines, VehiculoAceites, VehiculoFiltros
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
@@ -57,24 +57,32 @@ def registro_edicion(request, vehiculo_id=None):
     BateriaFormSet = inlineformset_factory(Vehiculos, VehiculoBaterias, extra=1, can_delete=True, form=VehiculoForm)
     CauchoFormSet = inlineformset_factory(Vehiculos, VehiculoCauchos, extra=1, can_delete=True, form=VehiculoForm)
     RinFormSet = inlineformset_factory(Vehiculos, VehiculoRines, extra=1, can_delete=True, form=VehiculoForm)    
+    AceiteFormSet = inlineformset_factory(Vehiculos, VehiculoAceites, extra=1, can_delete=True, form=VehiculoForm)
+    FiltroFormSet = inlineformset_factory(Vehiculos, VehiculoFiltros, extra=1, can_delete=True, form=VehiculoForm)    
 
     if request.method == 'POST':
         form = VehiculoCreate(request.POST, instance=vehiculo)
         bateriaFormset = BateriaFormSet(request.POST, instance=vehiculo)
         cauchoFormset = CauchoFormSet(request.POST, instance=vehiculo)
         rinFormset = RinFormSet(request.POST, instance=vehiculo)        
+        aceiteFormset = AceiteFormSet(request.POST, instance=vehiculo)
+        filtroFormset = FiltroFormSet(request.POST, instance=vehiculo)                 
 
-        if form.is_valid() and bateriaFormset.is_valid() and cauchoFormset.is_valid() and rinFormset.is_valid():
+        if form.is_valid() and bateriaFormset.is_valid() and cauchoFormset.is_valid() and rinFormset.is_valid() and aceiteFormset.is_valid() and filtroFormset.is_valid():
             form.save()
             bateriaFormset.save()
             cauchoFormset.save()
-            rinFormset.save()            
+            rinFormset.save()
+            aceiteFormset.save()                        
+            filtroFormset.save()                                    
             return render_to_response('vehiculos.html')
     else:
         form = VehiculoCreate(instance=vehiculo)
         bateriaFormset = BateriaFormSet(instance=vehiculo)
         cauchoFormset = CauchoFormSet(instance=vehiculo)
-        rinFormset = RinFormSet(instance=vehiculo)        
+        rinFormset = RinFormSet(instance=vehiculo)
+        aceiteFormset = AceiteFormSet(instance=vehiculo)         
+        filtroFormset = FiltroFormSet(instance=vehiculo)                 
 
     return render_to_response('principal_vehiculos_editar.html', locals(),
         context_instance=ctx(request))
