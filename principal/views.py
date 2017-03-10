@@ -837,7 +837,7 @@ class ReporteSociosPDF(View):
 
         response = HttpResponse(content_type='application/pdf')
         pdf_name = "clientes.pdf"  # llamado clientes
-        # la linea 26 es por si deseas descargar el pdf a tu computadora
+        # #la linea 26 es por si deseas descargar el pdf a tu computadora
         # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
         buff = BytesIO()
         doc = BaseDocTemplate(buff, pagesize=letter)
