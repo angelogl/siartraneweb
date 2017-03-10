@@ -29,9 +29,12 @@ from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos, Vehic
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Table, TableStyle
+from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Image
 from reportlab.lib.units import cm
 from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.enums import TA_CENTER
 
 from django.conf import settings
 
@@ -176,8 +179,8 @@ class ReporteCooperativasPDF(View):
         pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
         
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
-        pdf.setFont("Helvetica", 16)
-        #Dibujamos una cadena en la ubicación X,Y especificada
+        pdf.setFont("Courier", 12)
+        #Dibujamos una cadena en la ubicaión X,Y especificada
         pdf.drawString(230, 790, u"LISTADO DE COOPERATIVAS")
 
     def tabla(self,pdf,y):
@@ -186,7 +189,7 @@ class ReporteCooperativasPDF(View):
         #Creamos una lista de tuplas que van a contener a las personas
         detalles = [(cooperativas.rif, cooperativas.nombre, cooperativas.descripcion, cooperativas.NomRepLegal) for cooperativas in Cooperativas.objects.all().order_by('nombre')]
         #Establecemos el tamaño de cada una de las columnas de la tabla
-        detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 5 * cm, 5 * cm, 5 * cm])
+        detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 3 * cm, 6 * cm, 6 * cm])
         #Aplicamos estilos a las celdas de la tabla
         detalle_orden.setStyle(TableStyle(
             [
@@ -195,11 +198,11 @@ class ReporteCooperativasPDF(View):
                 #Los bordes de todas las celdas serán de color negro y con un grosor de 1
                 ('GRID', (0, 0), (-1, -1), 1, colors.black), 
                 #El tamaño de las letras de cada una de las celdas será de 10
-                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('FONTSIZE', (0, 0), (-1, -1), 6),
             ]
         ))
         #Establecemos el tamaño de la hoja que ocupará la tabla 
-        detalle_orden.wrapOn(pdf, 800, 600)
+        detalle_orden.wrapOn(pdf, 600, 800)
         #Definimos la coordenada donde se dibujará la tabla
         detalle_orden.drawOn(pdf, 60,y)
 
@@ -779,18 +782,19 @@ class ReporteSociosPDF(View):
         archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
         #archivo_imagen = 'static/images/cuvolene.png'
         #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
-        pdf.drawImage(archivo_imagen, 40, 750, 120, 90,preserveAspectRatio=True)
+        pdf.drawImage(archivo_imagen, 40, 710, 120, 90,preserveAspectRatio=True)
         
         #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
         pdf.setFont("Helvetica", 16)
         #Dibujamos una cadena en la ubicación X,Y especificada
-        pdf.drawString(230, 790, u"LISTADO DE SOCIOS")
+        pdf.drawString(230, 750, u"LISTADO DE SOCIOS")
 
     def tabla(self,pdf,y):
         #Creamos una tupla de encabezados para neustra tabla
         encabezados = ('Cedula', 'Apellidos', 'Nombres', 'Direccion')
         #Creamos una lista de tuplas que van a contener a las personas
-        detalles = [(socios.cedula, socios.apellidos, socios.nombres, socios.direccion) for socios in Socios.objects.all()]
+        styles = getSampleStyleSheet()        
+        detalles = [(socios.cedula, socios.apellidos, socios.nombres, Paragraph(socios.direccion,styles["Normal"])) for socios in Socios.objects.all()]
         #Establecemos el tamaño de cada una de las columnas de la tabla
         detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 5 * cm, 5 * cm, 5 * cm])
         #Aplicamos estilos a las celdas de la tabla
@@ -799,33 +803,73 @@ class ReporteSociosPDF(View):
                 #La primera fila(encabezados) va a estar centrada
                 ('ALIGN',(0,0),(3,0),'CENTER'),
                 #Los bordes de todas las celdas serán de color negro y con un grosor de 1
-                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                ('GRID', (0, 0), (3, 0), 1, colors.black), 
                 #El tamaño de las letras de cada una de las celdas será de 10
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('VALIGN',(0,0),(-1,-1),'TOP'),
+                ('BACKGROUND', (0, 0), (3, 0), colors.gray),              
             ]
         ))
         #Establecemos el tamaño de la hoja que ocupará la tabla 
-        detalle_orden.wrapOn(pdf, 800, 600)
+        width, height = letter        
+        detalle_orden.wrapOn(pdf, width, height)
         #Definimos la coordenada donde se dibujará la tabla
         detalle_orden.drawOn(pdf, 60,y)
 
     def get(self, request, *args, **kwargs):
         #Indicamos el tipo de contenido a devolver, en este caso un pdf
-        response = HttpResponse(content_type='application/pdf')
+        #response = HttpResponse(content_type='application/pdf')
         #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
-        buffer = BytesIO()
+        #buffer = BytesIO()
         #Canvas nos permite hacer el reporte con coordenadas X y Y
-        pdf = canvas.Canvas(buffer)
+        #pdf = canvas.Canvas(buffer,pagesize=letter)
         #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
-        self.cabecera(pdf)
-        y = 670
-        self.tabla(pdf, y)
+        #self.cabecera(pdf)
+        #y = 600
+        #self.tabla(pdf, y)
         #Con show page hacemos un corte de página para pasar a la siguiente
-        pdf.showPage()
-        pdf.save()
-        pdf = buffer.getvalue()
-        buffer.close()
-        response.write(pdf)
+        #pdf.showPage()
+        #pdf.save()
+        #pdf = buffer.getvalue()
+        #buffer.close()
+        #response.write(pdf)
+        #return response
+
+        response = HttpResponse(content_type='application/pdf')
+        pdf_name = "clientes.pdf"  # llamado clientes
+        # la linea 26 es por si deseas descargar el pdf a tu computadora
+        # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
+        buff = BytesIO()
+        doc = SimpleDocTemplate(buff,
+                            pagesize=letter,
+                            rightMargin=40,
+                            leftMargin=40,
+                            topMargin=30,
+                            bottomMargin=18,
+                            )
+        clientes = []
+        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+        image = Image(archivo_imagen, width=120, height=80)
+        image.hAlign = 'LEFT'        
+        clientes.append(image)
+        
+        styles = getSampleStyleSheet()
+        header = Paragraph("Listado de Clientes", styles['title'])
+        clientes.append(header)
+        headings = ('Cedula', 'Apellidos', 'Nombres', 'Direccion')
+        allclientes = [(socios.cedula, socios.apellidos, socios.nombres, Paragraph(socios.direccion,styles["Normal"])) for socios in Socios.objects.all()]
+        t = Table([headings] + allclientes)
+        t.setStyle(TableStyle(
+          [
+            ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
+            ('LINEBELOW', (0, 0), (-1, 0), 2, colors.darkblue),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.dodgerblue)
+          ]
+        ))
+        clientes.append(t)
+        doc.build(clientes)
+        response.write(buff.getvalue())
+        buff.close()
         return response
 
 class ReporteMarcasPDF(View):  
