@@ -29,7 +29,7 @@ from principal.models import Vehiculos, VehiculoBaterias, VehiculoCauchos, Vehic
 
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Image
+from reportlab.platypus import Table, TableStyle, Paragraph, SimpleDocTemplate, Image, BaseDocTemplate, Frame, PageTemplate
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
@@ -840,13 +840,7 @@ class ReporteSociosPDF(View):
         # la linea 26 es por si deseas descargar el pdf a tu computadora
         # response['Content-Disposition'] = 'attachment; filename=%s' % pdf_name
         buff = BytesIO()
-        doc = SimpleDocTemplate(buff,
-                            pagesize=letter,
-                            rightMargin=40,
-                            leftMargin=40,
-                            topMargin=30,
-                            bottomMargin=18,
-                            )
+        doc = BaseDocTemplate(buff, pagesize=letter)
         clientes = []
         archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
         image = Image(archivo_imagen, width=120, height=80)
@@ -867,10 +861,24 @@ class ReporteSociosPDF(View):
           ]
         ))
         clientes.append(t)
+
+        frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='normal')
+        template = PageTemplate(id='test', frames=frame, onPage=footer)
+        doc.addPageTemplates([template])
+
         doc.build(clientes)
         response.write(buff.getvalue())
         buff.close()
         return response
+
+def footer(canvas, doc):
+    styles = getSampleStyleSheet()    
+    styleN = styles['Normal']    
+    canvas.saveState()
+    P = Paragraph("This is a multi-line footer.  It goes on every page.  " * 5, styleN)
+    w, h = P.wrap(doc.width, doc.bottomMargin)
+    P.drawOn(canvas, doc.leftMargin, h)
+    canvas.restoreState()
 
 class ReporteMarcasPDF(View):  
      
