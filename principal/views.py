@@ -873,7 +873,7 @@ class ReporteSociosPDF(View):
 
 def header(canvas, doc):
     styles = getSampleStyleSheet()    
-    #styleN = styles['Normal']    
+    styleN = styles['Normal']    
     canvas.saveState()
     #content = Paragraph("This is a multi-line header.  It goes on every page.  " * 8, styleN)    
     #w, h = content.wrap(doc.width, doc.topMargin)
@@ -888,6 +888,11 @@ def header(canvas, doc):
     content = Paragraph("Listado de Clientes", styles['title'])    
     w, h = content.wrap(doc.width, doc.topMargin)
     content.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - h*2)
+
+    P = Paragraph("Página %d" % doc.page, styleN)
+    w, h = P.wrap(doc.width, doc.bottomMargin)
+    P.drawOn(canvas, doc.leftMargin, h)
+
     canvas.restoreState()    
 
 def footer(canvas, doc):
