@@ -842,17 +842,17 @@ class ReporteSociosPDF(View):
         buff = BytesIO()
         doc = BaseDocTemplate(buff, pagesize=letter)
         clientes = []
-        archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
-        image = Image(archivo_imagen, width=120, height=80)
-        image.hAlign = 'LEFT'        
-        clientes.append(image)
+        #archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+        #image = Image(archivo_imagen, width=120, height=80)
+        #image.hAlign = 'LEFT'        
+        #clientes.append(image)
         
         styles = getSampleStyleSheet()
-        header = Paragraph("Listado de Clientes", styles['title'])
-        clientes.append(header)
+        #header = Paragraph("Listado de Clientes", styles['title'])
+        #clientes.append(header)
         headings = ('Cedula', 'Apellidos', 'Nombres', 'Direccion')
         allclientes = [(socios.cedula, socios.apellidos, socios.nombres, Paragraph(socios.direccion,styles["Normal"])) for socios in Socios.objects.all()]
-        t = Table([headings] + allclientes)
+        t = Table([headings] + allclientes, repeatRows=1)
         t.setStyle(TableStyle(
           [
             ('GRID', (0, 0), (3, -1), 1, colors.dodgerblue),
@@ -862,14 +862,27 @@ class ReporteSociosPDF(View):
         ))
         clientes.append(t)
 
-        frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='normal')
-        template = PageTemplate(id='test', frames=frame, onPage=footer)
+        frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height-3*cm, id='normal')
+        template = PageTemplate(id='test', frames=frame, onPage=header)
         doc.addPageTemplates([template])
 
         doc.build(clientes)
         response.write(buff.getvalue())
         buff.close()
         return response
+
+def header(canvas, doc):
+    #styles = getSampleStyleSheet()    
+    #styleN = styles['Normal']    
+    canvas.saveState()
+    #content = Paragraph("This is a multi-line header.  It goes on every page.  " * 8, styleN)    
+    #w, h = content.wrap(doc.width, doc.topMargin)
+    #content.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - h)
+    archivo_imagen = settings.STATIC_ROOT+'/images/cuvolene.png'
+    image = Image(archivo_imagen, width=120, height=80)
+    image.hAlign = 'LEFT'
+    image.drawOn(canvas, doc.leftMargin, doc.height + doc.topMargin - 80)          
+    canvas.restoreState()
 
 def footer(canvas, doc):
     styles = getSampleStyleSheet()    
