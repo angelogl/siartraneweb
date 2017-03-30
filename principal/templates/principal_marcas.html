@@ -3,6 +3,7 @@
 
 {% block extra_head_base %}
     <link rel="stylesheet" href="{% static 'css/principal.css' %}" type="text/css" /> 
+    <link rel="stylesheet" href="{% static 'css/jquery.dataTables.min.css' %}"  type="text/css" />    
     <link rel="stylesheet" href="{% static 'django_modalview/css/modal.css' %}" type="text/css" /> 
     <script src='/site_media/static/js/site-5e73bbeeb0.js'></script>   
 {% endblock %}
@@ -18,9 +19,10 @@
            <table class="table table-hover" id="table_marcas">
                  <thead>
                     <tr>
-                       <th>{% trans 'Marca' %}</th>
-                       <th>{% trans 'Modelo' %}</th>
-                      <th colspan="2" align="center">{% trans 'Acciones' %}</th
+                       <th class="text-center">{% trans 'Marca' %}</th>
+                       <th class="text-center">{% trans 'Modelo' %}</th>
+                       <th class="text-center">{% trans 'Acciones' %}</th>
+                       <th class="text-center">{% trans 'Acciones' %}</th>                       
                     </tr>
                  </thead>
                  <tbody>
@@ -28,8 +30,8 @@
                          <tr>
                            <td>{{ marcas.marca }}</td>
                            <td>{{ marcas.modelo|default:'' }}</td>
-                           <td><a id="update_marca{{ marcas.id }}" href="{% url 'marca_edit' marcas.id %}" class="btn btn-primary btn-ms">Editar</a></td>
-                           <td><a id="delete_marca{{ marcas.id }}" href="{% url 'marca_delete' marcas.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
+                           <td class="text-center"><a id="update_marca{{ marcas.id }}" href="{% url 'marca_edit' marcas.id %}" class="btn btn-primary btn-ms">Editar</a></td>
+                           <td class="text-center"><a id="delete_marca{{ marcas.id }}" href="{% url 'marca_delete' marcas.id %}" class="btn btn-danger btn-ms">Egresar</a></td>
                          </tr>
                          <script type="text/javascript">
                             $(function(){
@@ -65,7 +67,7 @@
 
   <script type="text/javascript" src="{% static 'django_modalview/js/django_modal_view.js' %}"></script>
   <script type="text/javascript" src="{% static 'django_modalview/js/jquery.form.js' %}"></script>    
-
+  <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
   <script type="text/javascript">
      $(function(){
        $('#create_marca').DjangoModalRunner({
@@ -75,4 +77,16 @@
        });
      });
   </script>
+
+  <script>
+  $(document).ready(function() 
+  {   
+    var table = $('#table_marcas').DataTable( {
+        "language": {
+            url: "/site_media/static/localizacion/es_ES.json"
+        }
+    } );
+     
+  });
+  </script>  
 {% endblock %}
